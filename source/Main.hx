@@ -44,6 +44,11 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+        ClientPrefs.load();
+        ClientPrefs.loadDefaultKeys();
+        ClientPrefs.tryBindingSave('funkin');
+
 		#if mobile
 		#if android
 		StorageUtil.requestPermissions();

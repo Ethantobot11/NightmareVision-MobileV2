@@ -56,10 +56,6 @@ class TitleState extends MusicBeatState
 		randomIntroText = FlxG.random.getObject(getIntroText());
 		
 		initStateScript();
-
-        #if TOUCH_CONTROLS
-		MobileData.init();
-		#end
 		
 		startIntro();
 		

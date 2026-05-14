@@ -1,0 +1,420 @@
+name: Desktop and Mobile Binaries
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      buildFlags:
+        required: false
+        type: string
+      name:
+        required: false
+        type: string
+        default: "NightmareBuild"
+      doCache:
+        required: false
+        type: string
+        default: "YES"
+        
+permissions: write-all
+env:
+  PROJECT_NAME: NightmareVision
+
+jobs:
+  Windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Restore Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-windows-${{ inputs.name }}
+          path: |
+            .haxelib/
+            C:/haxelib/
+            export/release/windows/haxe/
+            export/release/windows/obj/
+          restore-keys: |
+            cache-windows-
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Libs
+        run: |
+          haxelib setup C:/haxelib
+          haxelib install hxcpp > nul
+          haxelib install hxpkg --quiet
+          haxelib install compiletime --quiet
+          haxelib run hxpkg install
+
+      - name: Compile Windows
+        run: haxelib run lime build windows -release -D ${{ inputs.buildFlags || '' }}
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NightmareVision-Windows
+          path: export/release/windows/bin/*.exe
+
+      - name: Clear Old Cache
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-windows-${{ inputs.name }}") {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+              }
+            }
+
+      - name: Save New Cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-windows-${{ inputs.name }}
+          path: |
+            .haxelib/
+            C:/haxelib/
+            export/release/windows/haxe/
+            export/release/windows/obj/
+
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Restore Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-linux-${{ inputs.name }}
+          path: |
+            ~/.haxelib/
+            export/release/linux/haxe/
+            export/release/linux/obj/
+          restore-keys: |
+            cache-linux-
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev libalut-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libvlc-dev libvlccore-dev vlc
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Libs
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null
+          haxelib install hxpkg --quiet
+          haxelib install compiletime --quiet
+          haxelib run hxpkg install
+
+      - name: Compile Linux
+        run: haxelib run lime build linux -release -D ${{ inputs.buildFlags || '' }}
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NightmareVision-Linux
+          path: export/release/linux/bin/*
+
+      - name: Clear Old Cache
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-linux-${{ inputs.name }}") {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+              }
+            }
+
+      - name: Save New Cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-linux-${{ inputs.name }}
+          path: |
+            ~/.haxelib/
+            export/release/linux/haxe/
+            export/release/linux/obj/
+
+  macOS:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Restore Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-macos-${{ inputs.name }}
+          path: |
+            ~/.haxelib/
+            export/release/macos/haxe/
+            export/release/macos/obj/
+          restore-keys: |
+            cache-macos-
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Libs
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null
+          haxelib install hxpkg --quiet
+          haxelib install compiletime --quiet
+          haxelib run hxpkg install
+
+      - name: Compile macOS
+        run: haxelib run lime build mac -release -D ${{ inputs.buildFlags || '' }}
+
+      - name: Zip App
+        run: |
+          if [ -d "export/release/macos/bin" ]; then cd export/release/macos/bin;
+          elif [ -d "export/release/mac/bin" ]; then cd export/release/mac/bin;
+          else exit 1; fi
+          zip -r ../../../NightmareVision-macOS.zip .
+          
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NightmareVision-macOS
+          path: NightmareVision-macOS.zip
+
+      - name: Clear Old Cache
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-macos-${{ inputs.name }}") {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+              }
+            }
+
+      - name: Save New Cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-macos-${{ inputs.name }}
+          path: |
+            ~/.haxelib/
+            export/release/macos/haxe/
+            export/release/macos/obj/
+
+  Android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Restore Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-android-${{ inputs.name }}
+          path: |
+            ~/.gradle
+            ~/.haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+          restore-keys: |
+            cache-android-
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Libs
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hxpkg --quiet
+          haxelib install compiletime --quiet
+          haxelib run hxpkg install
+
+      - name: Configure Android
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME
+          haxelib run lime config ANDROID_SETUP true
+
+      - name: Compile Android
+        run: haxelib run lime build android -D ${{ inputs.buildFlags || '' }}
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NightmareVision-Android
+          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+
+      - name: Clear Old Cache
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-android-${{ inputs.name }}") {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+              }
+            }
+
+      - name: Save New Cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-android-${{ inputs.name }}
+          path: |
+            ~/.gradle
+            ~/.haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+
+  iOS:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+      - name: Restore Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-ios-${{ inputs.name }}
+          path: |
+            ~/.gradle
+            ~/.haxelib/
+            export/release/ios/${{ env.PROJECT_NAME }}/haxe/
+            export/release/ios/${{ env.PROJECT_NAME }}/obj/
+          restore-keys: |
+            cache-ios-
+      - name: Install Libs
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hxpkg --quiet
+          haxelib install compiletime --quiet
+          haxelib run hxpkg install
+      - name: Compile iOS
+        run: haxelib run lime build ios -nosign -D ${{ inputs.buildFlags || '' }}
+      - name: Make IPA
+        run: |
+          brew install ldid
+          cd export/release/ios/build/Release-iphoneos/*.app
+          ldid -S NightmareVision
+          cd ..
+          mkdir Payload
+          cp -r *.app Payload/
+          zip -r NightmareVision.ipa Payload
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NightmareVision-iOS
+          path: export/release/ios/build/Release-iphoneos/*.ipa
+      - name: Clear Old Cache
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-android-${{ inputs.name }}") {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+              }
+            }
+      - name: Save New Cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-ios-${{ inputs.name }}
+          path: |
+            ~/.gradle
+            ~/.haxelib/
+            export/release/ios/${{ env.PROJECT_NAME }}/haxe/
+            export/release/ios/${{ env.PROJECT_NAME }}/obj/
+  Switch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for Nintendo Switch
+        run: |
+          echo "Nintendo Switch build is currently a placeholder."
+          echo "Waiting for SDK approval from Nintendo Developer Portal."
+      - name: Success Signal
+        run: exit 0
+
+  Releaser:
+    needs: [Windows, Linux, macOS, Android, iOS, Switch]
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Publish The Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release 0.1"
+          tag_name: "0.1"
+          make_latest: true
+          files: |
+            artifacts/NightmareVision-Windows/*.exe
+            artifacts/NightmareVision-Linux/*
+            artifacts/NightmareVision-macOS/*.zip
+            artifacts/NightmareVision-Android/*.apk
+            artifacts/NightmareVision-iOS/*.ipa
