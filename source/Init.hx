@@ -18,6 +18,12 @@ class Init extends FlxState
 {
 	override public function create():Void
 	{
+		#if TOUCH_CONTROLS
+		MobileData.init();
+		#end
+
+        ClientPrefs.load();
+		
 		// load settings/save
 		funkin.input.Controls.init();
 		
