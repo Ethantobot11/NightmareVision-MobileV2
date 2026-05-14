@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: NightmareVision-Windows
-          path: export/release/windows/bin/*.exe
+          path: export/release/windows/bin/
 
       - name: Clear Old Cache
         uses: actions/github-script@v7
@@ -132,7 +132,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: NightmareVision-Linux
-          path: export/release/linux/bin/*
+          path: export/release/linux/bin/
 
       - name: Clear Old Cache
         uses: actions/github-script@v7
@@ -194,19 +194,12 @@ jobs:
 
       - name: Compile macOS
         run: haxelib run lime build mac -release -D ${{ inputs.buildFlags || '' }}
-
-      - name: Zip App
-        run: |
-          if [ -d "export/release/macos/bin" ]; then cd export/release/macos/bin;
-          elif [ -d "export/release/mac/bin" ]; then cd export/release/mac/bin;
-          else exit 1; fi
-          zip -r ../../../NightmareVision-macOS.zip .
           
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: NightmareVision-macOS
-          path: NightmareVision-macOS.zip
+          path: export/release/macos/bin
 
       - name: Clear Old Cache
         uses: actions/github-script@v7
