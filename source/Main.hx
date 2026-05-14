@@ -16,7 +16,7 @@ import mobile.states.CopyState;
 class Main extends Sprite
 {
 	public static final PSYCH_VERSION:String = '0.5.2h';
-    public static var NMV_VERSION:String = public static var NMV_VERSION:String = #if NMV_VER haxe.macro.Compiler.getDefine("NMV_VER") #else "1.0" #end;
+    public static var NMV_VERSION:String = #if NMV_VER haxe.macro.Compiler.getDefine("NMV_VER") #else "1.0" #end;
 	public static final FUNKIN_VERSION:String = '0.2.7';
 	
 	public static final startMeta =
