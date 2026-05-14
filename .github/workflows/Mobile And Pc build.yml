@@ -351,12 +351,12 @@ jobs:
       - name: Make IPA
         run: |
           brew install ldid
-          cd export/release/ios/build/Release-iphoneos/*.app
-          ldid -S NightmareVision
+          cd export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.app
+          ldid -S ${{ env.PROJECT_NAME }}
           cd ..
           mkdir Payload
-          cp -r *.app Payload/
-          zip -r *.ipa Payload
+          cp -r ${{ env.PROJECT_NAME }}.app Payload/
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
