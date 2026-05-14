@@ -44,17 +44,14 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-        #if TOUCH_CONTROLS
-		MobileData.init();
-		#end
-
-        ClientPrefs.load();
-        ClientPrefs.loadDefaultKeys();
-        ClientPrefs.tryBindingSave('funkin');
-
 		#if mobile
 		#if android
+		StorageUtil.initExternalStorageDirectory(); //do not make this jobs everytime
 		StorageUtil.requestPermissions();
+		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/mods');
+		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/replays');
+		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/core'); //allow ability to change core files of engine (saveData)
+		StorageUtil.copySpesificFileFromAssets('mobile/storageModes.txt', StorageUtil.getCustomStoragePath());
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
