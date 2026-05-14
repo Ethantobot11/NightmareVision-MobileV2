@@ -48,7 +48,7 @@ jobs:
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > nul
-          haxelib install hxpkg --quiet --force
+          haxelib install hxpkg --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -121,7 +121,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install hxpkg --quiet --force
+          haxelib install hxpkg --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -188,7 +188,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install hxpkg --quiet --force
+          haxelib install hxpkg --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -268,7 +268,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
-          haxelib install hxpkg --quiet --force
+          haxelib install hxpkg --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -341,7 +341,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
-          haxelib install hxpkg --quiet--force
+          haxelib install hxpkg --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
       - name: Compile iOS
@@ -354,7 +354,7 @@ jobs:
           cd ..
           mkdir Payload
           cp -r *.app Payload/
-          zip -r NightmareVision.ipa Payload
+          zip -r *.ipa Payload
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -409,8 +409,8 @@ jobs:
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Release 0.1"
-          tag_name: "0.1"
+          name: "Release 0.2"
+          tag_name: "0.2"
           make_latest: true
           files: |
             artifacts/NightmareVision-Windows/*.exe
