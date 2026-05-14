@@ -14,18 +14,36 @@ import flixel.graphics.FlxGraphic;
 class Paths
 {
 	#if ASSET_REDIRECT
-	public static inline final trail = #if macos '../../../../../../../' #else '../../../../' #end;
-	#end
-	
-	/**
-	 * Primary asset directory
-	 */
-	public static inline final CORE_DIRECTORY = #if ASSET_REDIRECT trail + 'assets/game' #else 'assets' #end;
-	
-	/**
-	 * Mod directory
-	 */
-	public static inline final MODS_DIRECTORY = #if ASSET_REDIRECT trail + 'content' #else 'content' #end;
+    public static inline final trail = #if macos '../../../../../../../' #elseif mobile '' #else '../../../../' #end;
+    #end
+    
+    /**
+     * Primary asset directory
+     */
+    public static var CORE_DIRECTORY(get, never):String;
+    private static function get_CORE_DIRECTORY():String {
+        #if mobile
+            return StorageUtil.getStorageDirectory() + 'assets';
+        #elseif ASSET_REDIRECT 
+            return trail + 'assets/game';
+        #else 
+            return Sys.getCwd() + 'assets'; 
+        #end
+    }
+    
+    /**
+     * Mod directory
+     */
+    public static var MODS_DIRECTORY(get, never):String;
+    private static function get_MODS_DIRECTORY():String {
+        #if mobile
+            return StorageUtil.getStorageDirectory() + 'mods';
+        #elseif ASSET_REDIRECT 
+            return trail + 'content'; 
+        #else 
+            return Sys.getCwd() + 'content'; 
+        #end
+    }
 	
 	/**
 	 * Default font used by the game for most things.
