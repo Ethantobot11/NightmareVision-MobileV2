@@ -22,16 +22,16 @@ class MobileData
 		save = new FlxSave();
 		save.bind('MobileControls', CoolUtil.getSavePath());
 
-		readDirectory(Paths.getCorePath('mobile/MobileButton/DPadModes'), dpadModes);
-		readDirectory(Paths.getCorePath('mobile/Hitbox/HitboxModes'), hitboxModes);
-		readDirectory(Paths.getCorePath('mobile/MobileButton/ActionModes'), actionModes);
+		readDirectory(Paths.getPath('mobile/MobileButton/DPadModes'), dpadModes);
+		readDirectory(Paths.getPath('mobile/Hitbox/HitboxModes'), hitboxModes);
+		readDirectory(Paths.getPath('mobile/MobileButton/ActionModes'), actionModes);
 		#if MODS_ALLOWED
-		for (folder in directoriesWithFile(Paths.getCorePath(), 'mobile/MobileButton/'))
+		for (folder in directoriesWithFile(Paths.getPath(), 'mobile/MobileButton/'))
 		{
 			readDirectory(Path.join([folder, 'DPadModes']), dpadModes);
 			readDirectory(Path.join([folder, 'ActionModes']), actionModes);
 		}
-		for (folder in directoriesWithFile(Paths.getCorePath(), 'mobile/Hitbox/'))
+		for (folder in directoriesWithFile(Paths.getPath(), 'mobile/Hitbox/'))
 		{
 			readDirectory(Path.join([folder, 'HitboxModes']), hitboxModes);
 		}
