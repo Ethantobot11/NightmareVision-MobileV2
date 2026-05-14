@@ -22,7 +22,6 @@
 
 package mobile.states;
 
-#if COPYSTATE_ALLOWED
 import Init;
 import lime.utils.Assets as LimeAssets;
 import openfl.utils.Assets as OpenFLAssets;
@@ -113,7 +112,7 @@ class CopyState extends MusicBeatState
 				if (failedFiles.length > 0)
 				{
 					CoolUtil.doPopUp(failedFiles.join('\n'), 'Failed To Copy ${failedFiles.length} File.');
-					final folder:String = #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'logs/';
+					final folder:String = #if android StorageUtil.getStorageDirectory() + #else Sys.getCwd() + #end 'logs/';
 					if (!FileSystem.exists(folder))
 						FileSystem.createDirectory(folder);
 					File.saveContent(folder + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFilesStack.join('\n'));
@@ -155,7 +154,7 @@ class CopyState extends MusicBeatState
 						var path:String = '';
 						#if android
 						if (file.startsWith('content/'))
-							path = StorageUtil.getExternalStorageDirectory() + file;
+							path = StorageUtil.getStorageDirectory() + file;
 						else
 						#end
 							path = file;
@@ -182,7 +181,7 @@ class CopyState extends MusicBeatState
 		var directory = Path.directory(file);
 		#if android
 		if (fileName.startsWith('content/'))
-			directory = StorageUtil.getExternalStorageDirectory() + directory;
+			directory = StorageUtil.getStorageDirectory() + directory;
 		#end
 		try
 		{
@@ -238,7 +237,7 @@ class CopyState extends MusicBeatState
 		#if android
 		for (file in locatedFiles)
 			if (file.startsWith('content/'))
-				locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(StorageUtil.getExternalStorageDirectory() + file));
+				locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(StorageUtil.getStorageDirectory() + file));
 		#end
 
 		var filesToRemove:Array<String> = [];
@@ -268,4 +267,3 @@ class CopyState extends MusicBeatState
 		return (maxLoopTimes <= 0);
 	}
 }
-#end
