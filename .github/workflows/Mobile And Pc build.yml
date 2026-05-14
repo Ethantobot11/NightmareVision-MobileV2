@@ -18,7 +18,8 @@ on:
         
 permissions: write-all
 env:
-  PROJECT_NAME: NMV 
+  PROJECT_NAME: NMV
+  VERSION_BASE: "1.0"
 
 jobs:
   Windows:
@@ -41,7 +42,7 @@ jobs:
           haxelib run hxpkg install --force
 
       - name: Compile Windows
-        run: haxelib run lime build windows -release -D ${{ inputs.buildFlags || '' }}
+        run: haxelib run lime build windows -release -D NMV_VER=${{ env.VERSION_BASE }}.${{ github.run_number }} ${{ inputs.buildFlags || '' }}
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
@@ -85,7 +86,7 @@ jobs:
           haxelib run hxpkg install --force
 
       - name: Compile Linux
-        run: haxelib run lime build linux -release -D ${{ inputs.buildFlags || '' }}
+        run: haxelib run lime build linux -release -D NMV_VER=${{ env.VERSION_BASE }}.${{ github.run_number }} ${{ inputs.buildFlags || '' }}
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
@@ -152,7 +153,7 @@ jobs:
           haxelib run hxpkg install --force
 
       - name: Compile macOS
-        run: haxelib run lime build mac -release -D ${{ inputs.buildFlags || '' }}
+        run: haxelib run lime build mac -release -D NMV_VER=${{ env.VERSION_BASE }}.${{ github.run_number }} ${{ inputs.buildFlags || '' }}
           
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
@@ -232,7 +233,7 @@ jobs:
           haxelib run lime config ANDROID_SETUP true
 
       - name: Compile Android
-        run: haxelib run lime build android -D ${{ inputs.buildFlags || '' }}
+        run: haxelib run lime build android -release -D NMV_VER=${{ env.VERSION_BASE }}.${{ github.run_number }} ${{ inputs.buildFlags || '' }}
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
@@ -298,7 +299,7 @@ jobs:
           haxelib run hxpkg install --force
           
       - name: Compile iOS
-        run: haxelib run lime build ios -nosign -D ${{ inputs.buildFlags || '' }}
+        run: haxelib run lime build ios -nosign -release -D NMV_VER=${{ env.VERSION_BASE }}.${{ github.run_number }} ${{ inputs.buildFlags || '' }}
         
       - name: Make IPA
         run: |
@@ -363,8 +364,8 @@ jobs:
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Release 0.2"
-          tag_name: "0.2"
+          name: "Release ${{ env.VERSION_BASE }}.${{ github.run_number }}"
+          tag_name: "${{ env.VERSION_BASE }}.${{ github.run_number }}"
           make_latest: true
           files: |
             artifacts/NightmareVision-Windows/*.exe
