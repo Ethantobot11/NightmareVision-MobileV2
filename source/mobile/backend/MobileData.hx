@@ -31,7 +31,7 @@ class MobileData
 			readDirectory(Path.join([folder, 'DPadModes']), dpadModes);
 			readDirectory(Path.join([folder, 'ActionModes']), actionModes);
 		}
-		for (folder in directoriesWithFile(Paths.getPath(), 'mobile/Hitbox/'))
+		for (folder in directoriesWithFile(Paths.getCorePath(), 'mobile/Hitbox/'))
 		{
 			readDirectory(Path.join([folder, 'HitboxModes']), hitboxModes);
 		}
