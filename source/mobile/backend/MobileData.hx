@@ -5,6 +5,7 @@ import haxe.Json;
 import haxe.io.Path;
 import openfl.utils.Assets;
 import flixel.util.FlxSave;
+import funkin.Mods;
 
 class MobileData
 {
@@ -105,24 +106,24 @@ class MobileData
 		#end
 			foldersToCheck.push(path + fileToFind);
 
-		#if !MODS_ALLOWED
+		#if MODS_ALLOWED
 		if(mods)
 		{
 			// Global mods first
-			for(mod in Paths.getGlobalMods())
+			for(mod in Mods.getGlobalMods())
 			{
-				var folder:String = Paths.mods(mod + '/' + fileToFind);
+				var folder:String = Mods.mods(mod + '/' + fileToFind);
 				if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(folder);
 			}
 
 			// Then "PsychEngine/mods/" main folder
-			var folder:String = Paths.mods(fileToFind);
-			if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(Paths.mods(fileToFind));
+			var folder:String = Mods.mods(fileToFind);
+			if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(Mods.mods(fileToFind));
 
 			// And lastly, the loaded mod's folder
-			if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
+			if(Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
 			{
-				var folder:String = Paths.mods(Paths.currentModDirectory + '/' + fileToFind);
+				var folder:String = Mods.mods(Mods.currentModDirectory + '/' + fileToFind);
 				if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(folder);
 			}
 		}
