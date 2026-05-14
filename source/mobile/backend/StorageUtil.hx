@@ -121,7 +121,7 @@ class StorageUtil
 		return Sys.getCwd();
 		#end
 	}
-
+	#if android
 	public static function requestPermissions():Void
 	{
 		if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU)
@@ -171,6 +171,7 @@ class StorageUtil
 		trace(paths);
 		return paths.split(',');
 	}
+	#end
 
 	public static function getExternalDirectory(externalDir:String):String
 	{
