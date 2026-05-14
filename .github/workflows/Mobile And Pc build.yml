@@ -28,18 +28,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Restore Cache
-        uses: actions/cache/restore@v4
-        with:
-          key: cache-windows-${{ inputs.name }}
-          path: |
-            .haxelib/
-            C:/haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
-          restore-keys: |
-            cache-windows-
-
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
@@ -60,35 +48,6 @@ jobs:
         with:
           name: NightmareVision-Windows
           path: export/release/windows/bin/
-
-      - name: Clear Old Cache
-        uses: actions/github-script@v7
-        continue-on-error: true
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-windows-${{ inputs.name }}") {
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-              }
-            }
-
-      - name: Save New Cache
-        uses: actions/cache/save@v4
-        with:
-          key: cache-windows-${{ inputs.name }}
-          path: |
-            .haxelib/
-            C:/haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
 
   Linux:
     runs-on: ubuntu-latest
