@@ -14,7 +14,7 @@ on:
       doCache:
         required: false
         type: string
-        default: "YES"
+        default: "NO"
         
 permissions: write-all
 env:
