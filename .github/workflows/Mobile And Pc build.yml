@@ -48,9 +48,9 @@ jobs:
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > nul
-          haxelib install hxpkg --force
+          haxelib install hxpkg --quiet
           haxelib install compiletime --quiet
-          haxelib run hxpkg install
+          haxelib run hxpkg install --force
 
       - name: Compile Windows
         run: haxelib run lime build windows -release -D ${{ inputs.buildFlags || '' }}
@@ -121,9 +121,9 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install hxpkg --force
+          haxelib install hxpkg --quiet
           haxelib install compiletime --quiet
-          haxelib run hxpkg install
+          haxelib run hxpkg install --force
 
       - name: Compile Linux
         run: haxelib run lime build linux -release -D ${{ inputs.buildFlags || '' }}
@@ -188,9 +188,9 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install hxpkg --force
+          haxelib install hxpkg --quiet
           haxelib install compiletime --quiet
-          haxelib run hxpkg install
+          haxelib run hxpkg install --force
 
       - name: Compile macOS
         run: haxelib run lime build mac -release -D ${{ inputs.buildFlags || '' }}
@@ -268,9 +268,9 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
-          haxelib install hxpkg --force
+          haxelib install hxpkg --quiet
           haxelib install compiletime --quiet
-          haxelib run hxpkg install
+          haxelib run hxpkg install --force
 
       - name: Configure Android
         run: |
@@ -341,11 +341,13 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
-          haxelib install hxpkg --force
+          haxelib install hxpkg --quiet
           haxelib install compiletime --quiet
-          haxelib run hxpkg install
+          haxelib run hxpkg install --force
+          
       - name: Compile iOS
         run: haxelib run lime build ios -nosign -D ${{ inputs.buildFlags || '' }}
+        
       - name: Make IPA
         run: |
           brew install ldid
