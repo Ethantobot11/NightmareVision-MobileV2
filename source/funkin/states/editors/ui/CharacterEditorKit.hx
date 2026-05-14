@@ -137,5 +137,18 @@ class CharEditorUI extends flixel.group.FlxSpriteContainer
 	
 	// i didnt really need to do this but i also didnt want this like
 	// annoying big ass line so its jhust like suire dude
+    #if !ios
 	final _legend = MacroUtil.getPrecompliedContent('assets/excluded/ui/charEditor/legend.txt');
+    #elseif ios
+    final _legend = " Pressing [W, A, S, D] plays the corresponding sing animation.\nHolding shift while doing so will attempt to play alt animations.
+                      \nPressing [Z, X] will move a frame forward/backward of the currently playing animation.
+                      \nPressing C will replay the current animation.
+                      \nPressing [Q, E] can zoom in/out the camera.
+                      \nYou can Press CTRL+Z and CTRL+X to undo and redo changes.
+
+                      \nMouse Controls:
+                      \nClick and hold the mouse wheel to drag the camera and scroll to zoom.
+                      \nHolding the right mouse button will let you drag the current animations offset.
+                      \nHovering over the camera pointer and holding left click will allow you to drag it.";
+    #end
 }
