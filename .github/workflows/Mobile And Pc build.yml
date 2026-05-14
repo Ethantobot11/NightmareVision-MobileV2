@@ -18,7 +18,7 @@ on:
         
 permissions: write-all
 env:
-  PROJECT_NAME: "FNF NVM"
+  PROJECT_NAME: NMV 
 
 jobs:
   Windows:
@@ -48,7 +48,7 @@ jobs:
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > nul
-          haxelib install hxpkg --quiet
+          haxelib install hxpkg --quiet --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -121,7 +121,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install hxpkg --quiet
+          haxelib install hxpkg --quiet --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -188,7 +188,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install hxpkg --quiet
+          haxelib install hxpkg --quiet --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -268,7 +268,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
-          haxelib install hxpkg --quiet
+          haxelib install hxpkg --quiet --force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
 
@@ -341,7 +341,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
-          haxelib install hxpkg --quiet
+          haxelib install hxpkg --quiet--force
           haxelib install compiletime --quiet
           haxelib run hxpkg install
       - name: Compile iOS
