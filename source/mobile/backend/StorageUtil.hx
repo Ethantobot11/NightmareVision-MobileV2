@@ -95,7 +95,7 @@ class StorageUtil
 		}
 		catch (e:Dynamic)
 		{
-			CoolUtil.doPupUp('Please create directory to\n${StorageUtil.getStorageDirectory()}\nPress OK to close the game', "Error!");
+			CoolUtil.doPopUp('Please create directory to\n${StorageUtil.getStorageDirectory()}\nPress OK to close the game', "Error!");
 			lime.system.System.exit(1);
 		}
 
@@ -106,7 +106,7 @@ class StorageUtil
 		}
 		catch (e:Dynamic)
 		{
-			CoolUtil.doPupUp('Please create directory to\n${StorageUtil.getExternalStorageDirectory()}\nPress OK to close the game', "Error!");
+			CoolUtil.doPopUp('Please create directory to\n${StorageUtil.getExternalStorageDirectory()}\nPress OK to close the game', "Error!");
 			lime.system.System.exit(1);
 		}
 		#end
@@ -196,11 +196,11 @@ class StorageUtil
 
 			File.saveContent('$folder/$fileName', fileData);
 			if (alert)
-				CoolUtil.doPupUp('${fileName} has been saved.', "Success!");
+				CoolUtil.doPopUp('${fileName} has been saved.', "Success!");
 		}
 		catch (e:Dynamic)
 			if (alert)
-				CoolUtil.doPupUp('${fileName} couldn\'t be saved.\n${e.message}', "Error!");
+				CoolUtil.doPopUp('${fileName} couldn\'t be saved.\n${e.message}', "Error!");
 			else
 				trace('$fileName couldn\'t be saved. (${e.message})');
 	}
