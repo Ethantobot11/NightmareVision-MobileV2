@@ -18,7 +18,7 @@ on:
         
 permissions: write-all
 env:
-  PROJECT_NAME: NightmareVision
+  PROJECT_NAME: "FNF NVM"
 
 jobs:
   Windows:
