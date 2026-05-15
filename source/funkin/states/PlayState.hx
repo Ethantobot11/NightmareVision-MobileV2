@@ -2590,7 +2590,7 @@ class PlayState extends MusicBeatState
 				
 			if (doDeathCheck()) return;
 		}
-		#if TOUCH_CONTROLS MusicBeatState.mobilec.visible = false; #en
+		#if TOUCH_CONTROLS MusicBeatState.mobilec.visible = false; #end
 		canPause = false;
 		endingSong = true;
 		camZooming = false;
