@@ -48,7 +48,10 @@ class Main extends Sprite
 		#if android
 		StorageUtil.initExternalStorageDirectory(); //do not make this jobs everytime
 		StorageUtil.requestPermissions();
-		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/content');
+		var contentPath = AndroidContext.getExternalFilesDir() + '/content';
+		if (sys.FileSystem.exists(contentPath)) {
+			StorageUtil.chmod(2777, contentPath);
+		}
 		StorageUtil.copySpesificFileFromAssets('mobile/storageModes.txt', StorageUtil.getCustomStoragePath());
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
@@ -66,8 +69,16 @@ class Main extends Sprite
 		// load save data before creating FlxGame
 		ClientPrefs.loadDefaultKeys();
 		ClientPrefs.tryBindingSave('funkin');
-		
-		addChild(new funkin.backend.FunkinGame(startMeta.width, startMeta.height,#if mobile !CopyState.checkExistingFiles() ? CopyState : #end Init, startMeta.fps, startMeta.fps, true,startMeta.startFullScreen));
+
+		var initialState:Class<flixel.FlxState> = Init;
+		#if mobile
+		if (!CopyState.checkExistingFiles()) {
+			initialState = CopyState;
+		}
+		#end
+			
+		var game = new funkin.backend.FunkinGame(startMeta.width, startMeta.height, initialState, startMeta.fps, startMeta.fps, true, startMeta.startFullScreen);
+		addChild(game);
 		
 		// prevent accept button when alt+enter is pressed
 		FlxG.stage.addEventListener(openfl.events.KeyboardEvent.KEY_DOWN, (e) -> {
