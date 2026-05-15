@@ -57,7 +57,9 @@ class StorageUtil
 	public static var currentExternalStorageDirectory:String;
 	public static function initExternalStorageDirectory():String {
 		var daPath:String = '';
-		#if android
+		#if !android
+    	return getExternalStorageDirectory();
+		#elseif android
 		if (!FileSystem.exists(rootDir + 'storagetype.txt'))
 			File.saveContent(rootDir + 'storagetype.txt', ClientPrefs.storageType);
 
