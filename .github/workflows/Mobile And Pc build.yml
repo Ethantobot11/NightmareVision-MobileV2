@@ -368,8 +368,8 @@ jobs:
           tag_name: "${{ env.VERSION_BASE }}.${{ github.run_number }}"
           make_latest: true
           files: |
-            artifacts/NightmareVision-Windows/*.exe
-            artifacts/NightmareVision-Linux/*
+            artifacts/NightmareVision-Windows/*.zip
+            artifacts/NightmareVision-Linux/*.zip
             artifacts/NightmareVision-macOS/*.zip
             artifacts/NightmareVision-Android/*.apk
             artifacts/NightmareVision-iOS/*.ipa
