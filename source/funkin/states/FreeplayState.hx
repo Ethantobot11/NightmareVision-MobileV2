@@ -165,6 +165,10 @@ class FreeplayState extends MusicBeatState
 		}
 		curDifficulty = Math.round(Math.max(0, Difficulty.defaultDifficulties.indexOf(lastDifficultyName)));
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_C_D_V_X_Y_Z");
+        #end
+
 		super.create();
 		scriptGroup.call('onCreate', []);
 	}
@@ -274,13 +278,13 @@ class FreeplayState extends MusicBeatState
 		positionHighscore();
 		
 		var shiftMult:Int = 1;
-		if (FlxG.keys.pressed.SHIFT) shiftMult = 3;
+		if (FlxG.keys.pressed.SHIFT #if TOUCH_CONTROLS || mobilePad.buttonZ.justPressed #end) shiftMult = 3;
 		
 		if (freeplayTabs.length > 1)
 		{
-			if (FlxG.keys.justPressed.TAB)
+			if (FlxG.keys.justPressed.TAB #if TOUCH_CONTROLS || mobilePad.buttonZ.justPressed #end)
 			{
-				if (FlxG.keys.pressed.SHIFT) changeTab(-1);
+				if (FlxG.keys.pressed.SHIFT #if TOUCH_CONTROLS || mobilePad.buttonZ.justPressed #end) changeTab(-1);
 				else changeTab(1);
 				
 				changeDiff();
@@ -352,12 +356,12 @@ class FreeplayState extends MusicBeatState
 			FlxG.switchState(MainMenuState.new);
 		}
 		
-		if (FlxG.keys.justPressed.CONTROL)
+		if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS || mobilePad.buttonC.justPressed #end)
 		{
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
-		else if (FlxG.keys.justPressed.SPACE)
+		else if (FlxG.keys.justPressed.SPACE #if TOUCH_CONTROLS || mobilePad.buttonX.justPressed #end)
 		{
 			if (instPlaying != curSelected)
 			{

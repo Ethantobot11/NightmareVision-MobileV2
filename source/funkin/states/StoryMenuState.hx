@@ -186,6 +186,10 @@ class StoryMenuState extends MusicBeatState
 		changeWeek();
 		changeDifficulty();
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_X_Y");
+        #end
+
 		super.create();
 		scriptGroup.call('onCreatePost', []);
 	}

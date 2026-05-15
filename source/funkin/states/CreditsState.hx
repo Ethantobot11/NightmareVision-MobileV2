@@ -179,6 +179,11 @@ class CreditsState extends MusicBeatState
 		add(descText);
 		
 		changeSelection();
+
+        #if TOUCH_CONTROLS
+        addMobilePad("UP_DOWN", "A_B");
+        #end
+
 		super.create();
 		
 		scriptGroup.call('onCreate');
