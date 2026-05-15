@@ -11,7 +11,9 @@ import flixel.FlxGame;
 import flixel.input.keyboard.FlxKey;
 
 import funkin.backend.DebugDisplay;
+#if mobile
 import mobile.states.CopyState;
+#end
 @:nullSafety(Strict)
 class Main extends Sprite
 {
