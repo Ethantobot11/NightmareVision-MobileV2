@@ -385,6 +385,6 @@ jobs:
           files: |
             artifacts/NightmareVision-Windows/NightmareVision-Windows.zip
             artifacts/NightmareVision-Linux/NightmareVision-Linux.zip
-            artifacts/NightmareVision-macOS/NightmareVision-MacOs.zip
+            artifacts/NightmareVision-MacOs/NightmareVision-MacOs.zip
             artifacts/NightmareVision-Android/*.apk
             artifacts/NightmareVision-iOS/*.ipa
