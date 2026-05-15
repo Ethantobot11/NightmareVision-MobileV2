@@ -54,6 +54,10 @@ class VisualsUISubState extends BaseOptionsMenu
 		var option:Option = new Option('Camera Note Follow', "If unchecked, hitting notes will no longer have the camera follow in its direction.", 'camFollowsCharacters', BOOL, true);
 		addOption(option);
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_C");
+        #end
+        
 		super();
 	}
 }

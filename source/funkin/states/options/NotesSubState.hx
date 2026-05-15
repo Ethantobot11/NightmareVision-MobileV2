@@ -78,6 +78,10 @@ class NotesSubState extends MusicBeatSubstate
 		
 		changeSelection();
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_C");
+        #end
+        
 		scriptGroup.set('curSelected', curSelected);
 		scriptGroup.set('typeSelected', typeSelected);
 		scriptGroup.set('grpNumbers', grpNumbers);

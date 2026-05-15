@@ -116,6 +116,10 @@ class QuantNotesSubState extends MusicBeatSubstate
 		hsbText.x = posX + 240;
 		add(hsbText);
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_C");
+        #end
+        
 		changeSelection();
 	}
 	

@@ -68,6 +68,11 @@ class PlayState extends MusicBeatState
 	 * Static reference to the state. used for other classes to reference
 	 */
 	public static var instance:Null<PlayState> = null;
+
+    //Reload Mobile Controls Data
+	#if TOUCH_CONTROLS
+	MobileData.init();
+	#end
 	
 	public static var ratingStuff:Array<RatingInfo> = [
 		new RatingInfo('You Suck!', 0.2),
@@ -1054,7 +1059,10 @@ class PlayState extends MusicBeatState
 		{
 			// if its not 0 we can assume this was manually triggered
 			if (!genNotesBeforeCountdown) generatePlayfields();
-			
+			#if TOUCH_CONTROLS
+			MusicBeatState.mobilec.visible = true;
+			if (MusicBeatState.checkHitbox != true) MusicBeatState.mobilec.alpha = ClientPrefs.mobilePadAlpha;
+			#end
 			new FlxTimer().start(countdownDelay, (t:FlxTimer) -> {
 				startedCountdown = true;
 				Conductor.songPosition = 0;
@@ -2583,7 +2591,7 @@ class PlayState extends MusicBeatState
 				
 			if (doDeathCheck()) return;
 		}
-		
+		#if TOUCH_CONTROLS MusicBeatState.mobilec.visible = false; #en
 		canPause = false;
 		endingSong = true;
 		camZooming = false;
@@ -2904,7 +2912,10 @@ class PlayState extends MusicBeatState
 		
 		FlxDestroyUtil.destroyArray(NoteUtil.noteskins);
 		NoteUtil.noteskins.resize(0);
-		
+		#if LUAMPAD_ALLOWED
+		if (luaMobilePad != null)
+			luaMobilePad = FlxDestroyUtil.destroy(luaMobilePad);
+		#end
 		super.destroy();
 	}
 	

@@ -70,6 +70,10 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_C");
+        #end
+
 		super();
 	}
 	

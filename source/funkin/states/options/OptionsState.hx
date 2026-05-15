@@ -14,12 +14,15 @@ class OptionsState extends MusicBeatState
 	
 	var options:Array<String> = [
 		'Notes',
-		'Controls',
+		#if TOUCH_CONTROLS 
+        'Mobile Controls' #else 
+        'Controls'#end,
 		'Adjust Delay and Combo',
 		'Graphics',
 		'Visuals and UI',
 		'Gameplay',
-		"Misc"
+		"Misc"#if (TOUCH_CONTROLS || mobile), 
+        'Mobile Options' #end
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	
@@ -30,6 +33,10 @@ class OptionsState extends MusicBeatState
 	
 	public function openSelectedSubstate(label:String)
 	{
+        #if TOUCH_CONTROLS
+	    persistentUpdate = false;
+	    if (label != "Adjust Delay and Combo") removeMobilePad();
+	    #end
 		switch (label)
 		{
 			case 'Notes':
@@ -37,6 +44,10 @@ class OptionsState extends MusicBeatState
 			case 'Controls':
                 final gamepad = FlxG.gamepads.getFirstActiveGamepad();
 				openSubState(new funkin.states.options.ControlsSubState(gamepad != null ? Gamepad(gamepad.id) : Keys));
+            #if TOUCH_CONTROLS
+			case 'Mobile Controls':
+    			openSubState(new MobileControlSelectSubState());
+    		#end
 			case 'Graphics':
 				openSubState(new funkin.states.options.GraphicsSettingsSubState());
 			case 'Visuals and UI':
@@ -45,6 +56,10 @@ class OptionsState extends MusicBeatState
 				openSubState(new funkin.states.options.GameplaySettingsSubState());
 			case 'Misc':
 				openSubState(new funkin.states.options.MiscSubState());
+            #if (TOUCH_CONTROLS || mobile)
+			case 'Mobile Options':
+			    openSubState(new MobileOptionsSubState());
+			#end
 			case 'Adjust Delay and Combo':
 				FlxG.switchState(funkin.states.options.NoteOffsetState.new);
 		}
@@ -83,6 +98,10 @@ class OptionsState extends MusicBeatState
 		add(selectorRight);
 		
 		changeSelection();
+
+        #if TOUCH_CONTROLS
+		addMobilePad("UP_DOWN", "A_B_C");
+		#end
 		
 		super.create();
 		
@@ -92,7 +111,11 @@ class OptionsState extends MusicBeatState
 	override function closeSubState()
 	{
 		ClientPrefs.flush();
-		
+		#if TOUCH_CONTROLS
+		removeMobilePad();
+		addMobilePad("UP_DOWN", "A_B_C");
+		persistentUpdate = true;
+		#end
 		super.closeSubState();
         justLeftSubState = true;
 	}
@@ -125,7 +148,14 @@ class OptionsState extends MusicBeatState
 		{
 			openSelectedSubstate(options[curSelected]);
 		}
-		
+        
+		#if TOUCH_CONTROLS
+		if (mobilePad.buttonE.justPressed) {
+			removeMobilePad();
+			persistentUpdate = false;
+			openSubState(new MobileExtraControl());
+		}
+		#end
 		scriptGroup.call('onUpdatePost', [elapsed]);
         justLeftSubState = false;
 	}
