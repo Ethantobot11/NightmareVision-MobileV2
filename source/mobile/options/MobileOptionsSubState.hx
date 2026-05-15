@@ -12,7 +12,7 @@ import flixel.util.FlxSave;
 import haxe.Json;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
-import Controls;
+import funkin.input.Controls;
 import funkin.states.options.BaseOptionsMenu;
 import funkin.states.options.Option;
 import openfl.Lib;
@@ -172,7 +172,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 
 	inline public static function mergeAllTextsNamed(path:String, ?defaultDirectory:String = null, allowDuplicates:Bool = false)
 	{
-		if(defaultDirectory == null) defaultDirectory = Paths.getPreloadPath();
+		if(defaultDirectory == null) defaultDirectory = Paths.getCorePath();
 		defaultDirectory = defaultDirectory.trim();
 		if(!defaultDirectory.endsWith('/')) defaultDirectory += '/';
 		if(!defaultDirectory.startsWith('assets/')) defaultDirectory = 'assets/$defaultDirectory';
@@ -206,7 +206,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		if(mods)
 		{
 			// Global mods first
-			for(mod in Paths.getGlobalMods())
+			for(mod in Mods.pushGlobalMods())
 			{
 				var folder:String = Paths.mods(mod + '/' + fileToFind);
 				if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(folder);
@@ -217,9 +217,9 @@ class MobileOptionsSubState extends BaseOptionsMenu
 			if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(Paths.mods(fileToFind));
 
 			// And lastly, the loaded mod's folder
-			if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
+			if(Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
 			{
-				var folder:String = Paths.mods(Paths.currentModDirectory + '/' + fileToFind);
+				var folder:String = Paths.mods(Mods.currentModDirectory + '/' + fileToFind);
 				if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(folder);
 			}
 		}

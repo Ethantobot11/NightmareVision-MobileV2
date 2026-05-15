@@ -1,12 +1,15 @@
 package mobile.substates;
 
+import funkin.objects.Alphabet;
 import mobile.objects.MobileControls.Config;
 import flixel.ui.FlxButton as UIButton;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.util.FlxGradient;
 import funkin.states.options.ControlsSubState;
-
+import funkin.backend.MusicBeatSubstate;
+import funkin.backend.MusicBeatState;
+import funkin.data.ClientPrefs;
 
 class MobileControlSelectSubState extends MusicBeatSubstate
 {
@@ -213,7 +216,7 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 			}
 			titleText.text = 'Controls';
 			inControlsSubstate = true;
-			openSubState(new ControlsSubState());
+			openSubState(new funkin.states.options.ControlsSubState());
 		});
 		keyboard.color = FlxColor.GRAY;
 		keyboard.setGraphicSize(Std.int(keyboard.width) * 3);
