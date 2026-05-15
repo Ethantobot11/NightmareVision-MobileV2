@@ -62,16 +62,17 @@ class FunkinAssets
 	/**
 	 * Retrieves the Bytes of a given file from its path
 	 */
-	public static function getBytes(path:String):Bytes
-    {
-        #if (MODS_ALLOWED || ASSET_REDIRECT)
-        if (path != null && sys.FileSystem.exists(path)) return sys.io.File.getBytes(path);
-        #end
-        
-        if (Assets.exists(path)) return Assets.getBytes(path);
-        Logger.log('Could not find file at path [$path]', ERROR);
-        return null; // Handle null in the calling function
-    }
+	public static function getBytes(path:String):Null<Bytes>
+	{
+    #if (MODS_ALLOWED || ASSET_REDIRECT)
+    if (path != null && sys.FileSystem.exists(path)) return sys.io.File.getBytes(path);
+    #end
+    
+    if (Assets.exists(path)) return Assets.getBytes(path);
+
+    Logger.log('Could not find file at path [$path]', ERROR);
+    return null; 
+	}
 	
 	/**
 	 * Retrieves the content of a given file from its path
