@@ -27,7 +27,7 @@ class Paths
         #elseif ASSET_REDIRECT 
             return trail + 'assets/game';
         #else 
-            return Sys.getCwd() + 'assets'; 
+            return 'assets'; 
         #end
     }
     
@@ -37,11 +37,11 @@ class Paths
     public static var MODS_DIRECTORY(get, never):String;
     private static function get_MODS_DIRECTORY():String {
         #if mobile
-            return StorageUtil.getStorageDirectory() + 'mods';
+            return StorageUtil.getStorageDirectory() + 'content';
         #elseif ASSET_REDIRECT 
             return trail + 'content'; 
         #else 
-            return Sys.getCwd() + 'content'; 
+            return 'content'; 
         #end
     }
 	
