@@ -68,11 +68,6 @@ class PlayState extends MusicBeatState
 	 * Static reference to the state. used for other classes to reference
 	 */
 	public static var instance:Null<PlayState> = null;
-
-    //Reload Mobile Controls Data
-	#if TOUCH_CONTROLS
-	MobileData.init();
-	#end
 	
 	public static var ratingStuff:Array<RatingInfo> = [
 		new RatingInfo('You Suck!', 0.2),
@@ -600,6 +595,10 @@ class PlayState extends MusicBeatState
 		
 		FunkinAssets.cache.clearStoredMemory();
 		
+        //Reload Mobile Controls Data
+	    #if TOUCH_CONTROLS
+	    MobileData.init();
+	    #end
 		funkin.backend.DebugDisplay.addPlugin(() -> 'curStep: $curStep • curBeat: $curBeat • curSection: $curSection');
 		
 		skipCountdown = false;
