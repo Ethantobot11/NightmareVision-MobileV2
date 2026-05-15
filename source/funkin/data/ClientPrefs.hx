@@ -34,11 +34,14 @@ enum abstract UnderlayType(String) to String from String
 class ClientPrefs
 {
     // mobile ------------------------------------------------------------------------//
+	#if mobile
     @saveVar public static var extraKeys:Int = 0;
     @saveVar public static var hitboxLocation:String = 'Bottom';
     @saveVar public static var hitboxmode:String = 'New';
     @saveVar public static var hitboxtype:String = 'Gradient';
+	#if android
     @saveVar public static var storageType:String = 'EXTERNAL_DATA';
+	#end
     @saveVar public static var hitboxhint:Bool = false;
     @saveVar public static var mobilePadAlpha:Float = 0.6;
     @saveVar public static var hitboxalpha:Float = 0.7;
@@ -47,6 +50,7 @@ class ClientPrefs
     @saveVar public static var extraKeyReturn3:String = 'Q';
     @saveVar public static var extraKeyReturn4:String = 'E';
 	@saveVar public static var wideScreen:Bool = false;
+	#end
 	// debug ------------------------------------------------------------------------//
 	@saveVar public static var inDevMode:Bool = false;
 	
