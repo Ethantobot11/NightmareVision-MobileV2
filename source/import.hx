@@ -26,7 +26,7 @@ import funkin.api.DiscordClient;
 import hxvlc.flixel.*;
 #end
 
-#if TOUCH_CONTROLS
+#if (TOUCH_CONTROLS || !desktop)
 import mobile.flixel.*;
 import mobile.states.*;
 import mobile.objects.*;
@@ -37,7 +37,7 @@ import mobile.substates.*;
 import mobile.objects.Hitbox;
 import mobile.objects.MobilePad;
 import mobile.backend.MobileData;
-#elseif !desktop
+#else
 import mobile.backend.StorageUtil;
 import mobile.backend.PsychJNI;
 import mobile.options.*;
