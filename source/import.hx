@@ -37,7 +37,7 @@ import mobile.substates.*;
 import mobile.objects.Hitbox;
 import mobile.objects.MobilePad;
 import mobile.backend.MobileData;
-#else
+#elseif !desktop
 import mobile.backend.StorageUtil;
 import mobile.backend.PsychJNI;
 import mobile.options.*;
