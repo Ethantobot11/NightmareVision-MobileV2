@@ -129,9 +129,11 @@ class Mods
 	 */
 	static function ensureModsListExists()
 	{
-		if (!FunkinAssets.exists('modsList.txt'))
+		var path:String = #if mobile StorageUtil.getStorageDirectory() + #end 'modsList.txt';
+			
+		if (!FileSystem.exists(path))
 		{
-			File.saveContent('modsList.txt', '');
+			File.saveContent(path, '');
 		}
 	}
 	
@@ -157,7 +159,8 @@ class Mods
 	{
 		var list:Array<String> = [];
 		#if MODS_ALLOWED
-		var modsFolder:String = Paths.mods();
+		var modsFolder:String = Paths.mods(); 
+		
 		if (FileSystem.exists(modsFolder))
 		{
 			for (folder in FileSystem.readDirectory(modsFolder))
