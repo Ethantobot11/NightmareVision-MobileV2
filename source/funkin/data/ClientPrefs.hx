@@ -334,7 +334,7 @@ class ClientPrefs
 		if (FlxG.save.data.mute != null) FlxG.sound.muted = FlxG.save.data.mute;
 		
 		if (FlxG.save.data.framerate == null) framerate = Std.int(FlxMath.bound(FlxG.stage.application.window.displayMode.refreshRate, 60, 400));
-
+        #if mobile
         if(FlxG.save.data.extraKeys != null)
         	extraKeys = FlxG.save.data.extraKeys;
         if(FlxG.save.data.hitboxLocation != null)
@@ -345,8 +345,10 @@ class ClientPrefs
         	hitboxmode = FlxG.save.data.hitboxmode;
         if(FlxG.save.data.hitboxtype != null)
         	hitboxtype = FlxG.save.data.hitboxtype;
+		#if android
         if(FlxG.save.data.storageType != null)
         	storageType = FlxG.save.data.storageType;
+		#end
         if(FlxG.save.data.mobilePadAlpha != null)
         	mobilePadAlpha = FlxG.save.data.mobilePadAlpha;
         if(FlxG.save.data.hitboxalpha != null)
@@ -361,6 +363,7 @@ class ClientPrefs
         	extraKeyReturn4 = FlxG.save.data.extraKeyReturn4;
 		if(FlxG.save.data.wideScreen != null)
 			wideScreen = FlxG.save.data.wideScreen;
+		#end
 		
 		changeFps(framerate);
 		
