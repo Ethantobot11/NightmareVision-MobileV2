@@ -497,6 +497,7 @@ class Paths
 		return mods(key);
 	}
 	#end
+	#if mobile
     public static function readDirectory(directory:String):Array<String>
 	{
 		#if MODS_ALLOWED
@@ -517,4 +518,5 @@ class Paths
 		return dirs;
 		#end
 	}
+	#end
 }
