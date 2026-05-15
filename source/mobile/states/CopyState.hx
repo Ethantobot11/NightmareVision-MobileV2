@@ -84,86 +84,70 @@ class CopyState extends MusicBeatState
 
 		loadedText = new FlxText(loadingBar.x, loadingBar.y + 4, FlxG.width, '', 16);
 		loadedText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
-		add(loadedText);
-
-		thread = new ThreadPool(0, CoolUtil.getCPUThreadsCount());
-		thread.doWork.add(function(poop)
-		{
-			for (file in locatedFiles)
-			{
-				loopTimes++;
-				copyAsset(file);
-			}
-		});
-		new FlxTimer().start(0.2, (tmr) -> {
-    	shouldCopy = true;
-		});
-
+		add(loadedText);		
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-    if (shouldCopy && canUpdate)
-    {
-        var framesBatch = 0;
-        while(framesBatch < 10 && locatedFiles.length > 0) {
-            var file = locatedFiles.shift();
-            copyAsset(file);
-            loopTimes++;
-            framesBatch++;
-        }
+		if (shouldCopy && canUpdate)
+		{
+			var framesBatch = 0;
+			while(framesBatch < 15 && locatedFiles.length > 0) {
+				var file = locatedFiles.shift();
+				copyAsset(file);
+				loopTimes++;
+				framesBatch++;
+			}
 
-        if (loopTimes >= maxLoopTimes) {
-            canUpdate = false;
-            loadedText.text = "Completed!";
-            FlxG.sound.play(Paths.sound('confirmMenu')).onComplete = () -> {
-                FlxG.switchState(new Init());
-            };
-        } else {
-            loadedText.text = '$loopTimes/$maxLoopTimes';
-        }
-        
-        loadingBar.percent = Math.min((loopTimes / maxLoopTimes) * 100, 100);
-    }
-    super.update(elapsed);
+			loadedText.text = '$loopTimes / $maxLoopTimes';
+			loadingBar.value = loopTimes;
+
+			if (loopTimes >= maxLoopTimes) {
+				canUpdate = false;
+				shouldCopy = false;
+				loadedText.text = "Completed!";
+				cpp.vm.Gc.run(true); 
+				
+				FlxG.sound.play(Paths.sound('confirmMenu')).onComplete = () -> {
+					FlxG.switchState(new Init());
+				};
+			}
+		}
+		super.update(elapsed);
 	}
 
 	public function copyAsset(file:String)
 	{
-		if (!FileSystem.exists(file))
+		var destPath:String = file;
+		#if mobile
+		destPath = haxe.io.Path.join([StorageUtil.getStorageDirectory(), file]);
+		#end
+
+		if (!FileSystem.exists(destPath))
 		{
-			var directory = Path.directory(file);
+			var directory = Path.directory(destPath);
 			if (!FileSystem.exists(directory))
 				FileSystem.createDirectory(directory);
+
 			try
 			{
-				if (OpenFLAssets.exists(getFile(file)))
+				var assetKey = getFile(file);
+				if (OpenFLAssets.exists(assetKey))
 				{
-					if (textFilesExtensions.contains(Path.extension(file)))
-						createContentFromInternal(file);
-					else
-					{
-						var path:String = '';
-						#if (android || ios)
-						if (file.startsWith('content/') || file.startsWith('assets/'))
-    						path = StorageUtil.getStorageDirectory() + file;
-						else
-						#end
-    					path = file;
-						File.saveBytes(path, getFileBytes(getFile(file)));
+					var ext = Path.extension(file).toLowerCase();
+					if (textFilesExtensions.contains(ext)) {
+						var content = OpenFLAssets.getText(assetKey);
+						File.saveContent(destPath, content != null ? content : '');
+					}
+					else {
+						File.saveBytes(destPath, getFileBytes(assetKey));
 					}		
-				}
-				else
-				{
-					failedFiles.push(getFile(file) + " (File Dosen't Exist)");
-					failedFilesStack.push('Asset ${getFile(file)} does not exist.');
 				}
 			}
 			catch (e:haxe.Exception)
 			{
-				failedFiles.push('${getFile(file)} (${e.message})');
-				failedFilesStack.push('${getFile(file)} (${e.stack})');
+				trace('Error copying $file: ${e.message}');
 			}
 		}
 	}
@@ -230,7 +214,7 @@ class CopyState extends MusicBeatState
 		#if android
 		for (file in locatedFiles)
 			if (file.startsWith('content/'))
-				locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(StorageUtil.getStorageDirectory() + file));
+    				locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(haxe.io.Path.join([StorageUtil.getStorageDirectory(), file])));
 		#end
 
 		var filesToRemove:Array<String> = [];
