@@ -63,16 +63,15 @@ class FunkinAssets
 	 * Retrieves the Bytes of a given file from its path
 	 */
 	public static function getBytes(path:String):Bytes
-	{
-		#if (MODS_ALLOWED || ASSET_REDIRECT)
-		if (FileSystem.exists(path)) return File.getBytes(path);
-		#end
-		if (Assets.exists(path)) return Assets.getBytes(path);
-		else
-		{
-			throw 'Couldnt find file at path [$path]';
-		}
-	}
+    {
+        #if (MODS_ALLOWED || ASSET_REDIRECT)
+        if (path != null && sys.FileSystem.exists(path)) return sys.io.File.getBytes(path);
+        #end
+        
+        if (Assets.exists(path)) return Assets.getBytes(path);
+        Logger.log('Could not find file at path [$path]', ERROR);
+        return null; // Handle null in the calling function
+    }
 	
 	/**
 	 * Retrieves the content of a given file from its path
@@ -126,15 +125,16 @@ class FunkinAssets
 	 * if it could not be found, an empty array will be returned.
 	 */
 	public static function readDirectory(directory:String):Array<String>
-	{
-		#if (MODS_ALLOWED || ASSET_REDIRECT)
-		return FileSystem.exists(directory) ? FileSystem.readDirectory(directory) : []; // doing a check because i want this to maintain parity with ther assets variation
-		#else
-		if (directory.trim().length == 0) return [];
-		var dir = Assets.list().filter(string -> string.contains(directory));
-		return dir.map(string -> string.replace(directory, '').replace('/', ''));
-		#end
-	}
+    {
+        if (directory == null || directory == "") return [];
+
+        #if (MODS_ALLOWED || ASSET_REDIRECT)
+        if (sys.FileSystem.exists(directory) && sys.FileSystem.isDirectory(directory)) 
+            return sys.FileSystem.readDirectory(directory);
+        #end
+        var dir = Assets.list().filter(string -> string.contains(directory));
+        return dir.map(string -> string.replace(directory, '').replace('/', ''));
+    }
 	
 	public static function isDirectory(directory:String):Bool
 	{
