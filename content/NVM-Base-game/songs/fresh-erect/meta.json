@@ -1,0 +1,12 @@
+{
+    "songName": "Fresh-erect",
+    "displayName": "Fresh (Erect)",
+
+    "composers": ["Kohta Takahashi", "Saruky"],
+    "charters": ["fabs", "Spazkid"],
+
+    "difficulties": ["erect", "nightmare"],
+
+    "freeplayColor": "#9271FD",
+    "freeplayIcon": "dad"
+}

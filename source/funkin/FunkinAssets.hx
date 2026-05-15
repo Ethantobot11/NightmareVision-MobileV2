@@ -62,17 +62,18 @@ class FunkinAssets
 	/**
 	 * Retrieves the Bytes of a given file from its path
 	 */
-	public static function getBytes(path:String):Null<Bytes>
-	{
+	public static function getBytes(path:String):Bytes
+    {
     #if (MODS_ALLOWED || ASSET_REDIRECT)
     if (path != null && sys.FileSystem.exists(path)) return sys.io.File.getBytes(path);
     #end
     
-    if (Assets.exists(path)) return Assets.getBytes(path);
+    if (path != null && Assets.exists(path)) return Assets.getBytes(path);
 
     Logger.log('Could not find file at path [$path]', ERROR);
-    return null; 
-	}
+    
+    return haxe.io.Bytes.alloc(0); 
+    }
 	
 	/**
 	 * Retrieves the content of a given file from its path
@@ -126,24 +127,29 @@ class FunkinAssets
 	 * if it could not be found, an empty array will be returned.
 	 */
 	public static function readDirectory(directory:String):Array<String>
+{
+    if (directory == null || directory.length == 0) return [];
+
+    #if MODS_ALLOWED
+    var folderPath:String = haxe.io.Path.addTrailingSlash(directory);
+    if (sys.FileSystem.exists(folderPath) && sys.FileSystem.isDirectory(folderPath))
     {
-        if (directory == null || directory == "" || directory.length == 0) 
-            return [];
-        #if MODS_ALLOWED
-            if (sys.FileSystem.exists(directory) && sys.FileSystem.isDirectory(directory))
-            {
-                return sys.FileSystem.readDirectory(directory);
-            }
-        #end
-        try {
-            var assetsList = openfl.utils.Assets.list();
-            var filtered = assetsList.filter(function(s:String) return s.startsWith(directory));
-            return filtered.map(function(s:String) {
-                return s.replace(directory, '').replace('/', '');
-            });
-        } catch(e:Dynamic) {
-            return [];
-        }
+        return sys.FileSystem.readDirectory(folderPath);
+    }
+    #end
+
+    try {
+        var assetsList = openfl.utils.Assets.list();
+        var filtered = assetsList.filter(function(s:String) return s.startsWith(directory));
+        
+        return filtered.map(function(s:String) {
+            var file = s.replace(directory, '');
+            if (file.startsWith('/')) file = file.substring(1);
+            return file;
+        });
+    } catch(e:Dynamic) {
+        return [];
+    }
     }
 	
 	public static function isDirectory(directory:String):Bool

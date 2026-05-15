@@ -20,14 +20,16 @@ class Init extends FlxState
 	{
 		#if TOUCH_CONTROLS
 		MobileData.init();
-		#end
-
-        ClientPrefs.load();
+		#end        
 		
 		// load settings/save
 		funkin.input.Controls.init();
 		
 		funkin.data.Highscore.load();
+
+        new flixel.util.FlxTimer().start(0.1, function(tmr:flixel.util.FlxTimer) {
+        ClientPrefs.load();
+        });
 		
 		if (FlxG.save.data.weekCompleted != null) funkin.states.StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 		

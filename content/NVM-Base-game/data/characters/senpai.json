@@ -1,0 +1,82 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				1,
+				0
+			],
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Senpai Idle instance 1"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				3,
+				6
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "SENPAI UP NOTE instance 1",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				2,
+				0
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "SENPAI RIGHT NOTE instance 1",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				5,
+				0
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "SENPAI LEFT NOTE instance 1",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				3,
+				0
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "SENPAI DOWN NOTE instance 1",
+			"indices": []
+		}
+	],
+	"no_antialiasing": true,
+	"image": "characters/senpai",
+	"position": [
+		-120,
+		-10
+	],
+	"dance_every": 2,
+	"gameover_intial_sound": null,
+	"scalableOffsets": true,
+	"gameover_confirm_sound": null,
+	"healthicon": "senpai-pixel",
+	"gameover_character": null,
+	"vslice_sustains": false,
+	"flip_x": false,
+	"healthbar_colour": -21905,
+	"camera_position": [
+		134,
+		15
+	],
+	"gameover_loop_sound": null,
+	"sing_duration": 4,
+	"scale": 6,
+	"_editor_isPlayer": false
+}

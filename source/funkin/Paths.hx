@@ -23,9 +23,9 @@ class Paths
     public static var CORE_DIRECTORY(get, never):String;
     private static function get_CORE_DIRECTORY():String {
         #if mobile
-            return StorageUtil.getStorageDirectory() + 'assets';
+            return haxe.io.Path.join([StorageUtil.getStorageDirectory(), 'assets']);
         #elseif ASSET_REDIRECT 
-            return trail + 'assets/game';
+            return haxe.io.Path.join([trail, 'assets']); 
         #else 
             return 'assets'; 
         #end
@@ -37,9 +37,9 @@ class Paths
     public static var MODS_DIRECTORY(get, never):String;
     private static function get_MODS_DIRECTORY():String {
         #if mobile
-            return StorageUtil.getStorageDirectory() + 'content';
+            return haxe.io.Path.join([StorageUtil.getStorageDirectory(), 'content']);
         #elseif ASSET_REDIRECT 
-            return trail + 'content'; 
+            return haxe.io.Path.join([trail, 'content']); 
         #else 
             return 'content'; 
         #end

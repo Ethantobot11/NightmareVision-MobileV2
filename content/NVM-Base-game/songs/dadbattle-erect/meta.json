@@ -1,0 +1,12 @@
+{
+    "songName": "Dadbattle-erect",
+    "displayName": "Dad Battle (Erect)",
+
+    "composers": ["Kawai Sprite"],
+    "charters": ["Jenny Crowe", "fabs", "Spazkid"],
+
+    "difficulties": ["erect", "nightmare"],
+
+    "freeplayColor": "#9271FD",
+    "freeplayIcon": "dad"
+}

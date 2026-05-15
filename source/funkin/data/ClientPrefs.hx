@@ -333,7 +333,15 @@ class ClientPrefs
 		
 		if (FlxG.save.data.mute != null) FlxG.sound.muted = FlxG.save.data.mute;
 		
-		if (FlxG.save.data.framerate == null) framerate = Std.int(FlxMath.bound(FlxG.stage.application.window.displayMode.refreshRate, 60, 400));
+		if (FlxG.save.data.framerate == null) {
+        if (FlxG.stage.application != null && 
+        FlxG.stage.application.window != null && 
+        FlxG.stage.application.window.displayMode != null) {
+        framerate = Std.int(FlxMath.bound(FlxG.stage.application.window.displayMode.refreshRate, 60, 400));
+        } else {
+        framerate = 60;
+        }
+        }
         #if mobile
         if(FlxG.save.data.extraKeys != null)
         	extraKeys = FlxG.save.data.extraKeys;

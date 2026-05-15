@@ -1,0 +1,82 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-218,
+				-280
+			],
+			"loop": false,
+			"anim": "idle",
+			"fps": 24,
+			"name": "idle spirit_",
+			"indices": []
+		},
+		{
+			"offsets": [
+				-200,
+				-280
+			],
+			"loop": false,
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "left_",
+			"indices": []
+		},
+		{
+			"offsets": [
+				-153,
+				-214
+			],
+			"loop": false,
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "spirit down_",
+			"indices": []
+		},
+		{
+			"offsets": [
+				-220,
+				-280
+			],
+			"loop": false,
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "right_",
+			"indices": []
+		},
+		{
+			"offsets": [
+				-220,
+				-240
+			],
+			"loop": false,
+			"anim": "singUP",
+			"fps": 24,
+			"name": "up_",
+			"indices": []
+		}
+	],
+	"no_antialiasing": true,
+	"image": "characters/spirit",
+	"position": [
+		-1500,
+		-1720
+	],
+	"dance_every": 2,
+	"gameover_intial_sound": null,
+	"scalableOffsets": true,
+	"gameover_confirm_sound": null,
+	"healthicon": "spirit-pixel",
+	"gameover_character": null,
+	"vslice_sustains": false,
+	"flip_x": false,
+	"healthbar_colour": -50066,
+	"camera_position": [
+		1425,
+		1699
+	],
+	"gameover_loop_sound": null,
+	"sing_duration": 4,
+	"scale": 6,
+	"_editor_isPlayer": false
+}
