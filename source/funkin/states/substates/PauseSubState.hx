@@ -168,6 +168,10 @@ class PauseSubState extends MusicBeatSubstate
 		regenMenu();
 		cameras = [cam];
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B");
+        #end
+
 		super.create();
 		
 		scriptGroup.call('onCreatePost', []);

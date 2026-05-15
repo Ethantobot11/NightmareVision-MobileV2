@@ -406,6 +406,7 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
+    public var luaVpadCam:FlxCamera;
 	public var cameraSpeed:Float = 1;
 	
 	public var defaultScoreAddition:Bool = true;
@@ -624,16 +625,25 @@ class PlayState extends MusicBeatState
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
 		
-		camGame = new FlxCameraEx();
-		camHUD = new FlxCameraEx();
-		camOther = new FlxCameraEx();
+		camGame = new FlxCamera();
+		camHUD = new FlxCamera();
+		camOther = new FlxCamera();
+        #if LUAMPAD_ALLOWED
+		luaVpadCam = new FlxCamera();
+        #end
 		
 		camHUD.bgColor = 0x0;
 		camOther.bgColor = 0x0;
+        #if LUAMPAD_ALLOWED
+        luaVpadCam.bgColor = 0x0;
+        #end
 		
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOther, false);
+        #if LUAMPAD_ALLOWED
+        FlxG.cameras.add(luaVpadCam, false);
+        #end
 		
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -861,7 +871,7 @@ class PlayState extends MusicBeatState
 		addMobilePad("NONE", "P");
 	    addMobilePadCamera();
 		#end
-        
+
 		super.create();
 		
 		FunkinAssets.cache.clearUnusedMemory();

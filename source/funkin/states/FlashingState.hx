@@ -30,8 +30,9 @@ class FlashingState extends MusicBeatState
 		warnText.setFormat(Paths.DEFAULT_FONT, 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
-        
+        #if TOUCH_CONTROLS
         addMobilePad("NONE", "A_B");
+        #end
 	}
 	
 	override function update(elapsed:Float)

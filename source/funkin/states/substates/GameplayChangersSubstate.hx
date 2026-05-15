@@ -138,6 +138,11 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		
 		changeSelection();
 		reloadCheckboxes();
+
+        #if TOUCH_CONTROLS
+        addMobilePad("FULL", "A_B_C");
+        #end
+        
 	}
 	
 	var nextAccept:Int = 5;
@@ -285,7 +290,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				}
 			}
 			
-			if (controls.RESET)
+			if (controls.RESET #if TOUCH_CONTROLS || mobilePad.buttonC.justPressed #end)
 			{
 				for (i in 0...optionsArray.length)
 				{

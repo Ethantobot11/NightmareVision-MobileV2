@@ -99,6 +99,10 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.camera.follow(camFollow, LOCKON, 0);
 		}
 		
+        #if TOUCH_CONTROLS
+        addMobilePad("NONE", "A_B");
+        #end
+        
 		super.create();
 		
 		PlayState.instance?.scripts.call('onGameOverPost', []);
