@@ -95,9 +95,8 @@ class CopyState extends MusicBeatState
 				copyAsset(file);
 			}
 		});
-		new FlxTimer().start(0.5, (tmr) ->
-		{
-			thread.queue({});
+		new FlxTimer().start(0.2, (tmr) -> {
+    	shouldCopy = true;
 		});
 
 		super.create();
@@ -105,35 +104,29 @@ class CopyState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (shouldCopy)
-		{
-			if (loopTimes >= maxLoopTimes && canUpdate)
-			{
-				if (failedFiles.length > 0)
-				{
-					CoolUtil.doPopUp(failedFiles.join('\n'), 'Failed To Copy ${failedFiles.length} File.');
-					final folder:String = #if android StorageUtil.getStorageDirectory() + #else Sys.getCwd() + #end 'logs/';
-					if (!FileSystem.exists(folder))
-						FileSystem.createDirectory(folder);
-					File.saveContent(folder + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFilesStack.join('\n'));
-				}
-				
-				FlxG.sound.play(Paths.sound('confirmMenu')).onComplete = () ->
-				{
-					FlxG.switchState(new Init());
-				};
-		
-				canUpdate = false;
-			}
+    if (shouldCopy && canUpdate)
+    {
+        var framesBatch = 0;
+        while(framesBatch < 10 && locatedFiles.length > 0) {
+            var file = locatedFiles.shift();
+            copyAsset(file);
+            loopTimes++;
+            framesBatch++;
+        }
 
-			if (loopTimes >= maxLoopTimes)
-				loadedText.text = "Completed!";
-			else
-				loadedText.text = '$loopTimes/$maxLoopTimes';
-
-			loadingBar.percent = Math.min((loopTimes / maxLoopTimes) * 100, 100);
-		}
-		super.update(elapsed);
+        if (loopTimes >= maxLoopTimes) {
+            canUpdate = false;
+            loadedText.text = "Completed!";
+            FlxG.sound.play(Paths.sound('confirmMenu')).onComplete = () -> {
+                FlxG.switchState(new Init());
+            };
+        } else {
+            loadedText.text = '$loopTimes/$maxLoopTimes';
+        }
+        
+        loadingBar.percent = Math.min((loopTimes / maxLoopTimes) * 100, 100);
+    }
+    super.update(elapsed);
 	}
 
 	public function copyAsset(file:String)
@@ -152,12 +145,12 @@ class CopyState extends MusicBeatState
 					else
 					{
 						var path:String = '';
-						#if android
-						if (file.startsWith('content/'))
-							path = StorageUtil.getStorageDirectory() + file;
+						#if (android || ios)
+						if (file.startsWith('content/') || file.startsWith('assets/'))
+    						path = StorageUtil.getStorageDirectory() + file;
 						else
 						#end
-							path = file;
+    					path = file;
 						File.saveBytes(path, getFileBytes(getFile(file)));
 					}		
 				}
