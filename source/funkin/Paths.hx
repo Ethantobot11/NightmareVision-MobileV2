@@ -425,44 +425,44 @@ class Paths
 	 * 
 	 * `content/globalMods/`, `content/`, `content/currentMod/`.
 	 */
-	public static function listAllFilesInDirectory(directory:String, checkMods:Bool = true) // based of psychs Mods.directoriesWithFile
-	{
-		// todo maybe make this recursive ?
-		var folders:Array<String> = [];
-		var files:Array<String> = [];
-		
-		if (FunkinAssets.exists(getCorePath(directory))) folders.push(getCorePath(directory));
-		
-		#if MODS_ALLOWED
-		if (checkMods)
-		{
-			for (mod in Mods.globalMods)
-			{
-				final folder = mods('$mod/$directory');
-				if (FileSystem.exists(folder) && !folders.contains(folder)) folders.push(folder);
-			}
-			
-			final folder = mods(directory);
-			if (FileSystem.exists(folder) && !folders.contains(folder)) folders.push(folder);
-			
-			if (Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
-			{
-				final folder = mods('${Mods.currentModDirectory}/$directory');
-				if (FileSystem.exists(folder) && !folders.contains(folder)) folders.push(folder);
-			}
-		}
-		#end
-		
-		for (folder in folders)
-		{
-			for (file in FunkinAssets.readDirectory(folder))
-			{
-				final path = Path.join([folder, file]);
-				if (!files.contains(path)) files.push(path);
-			}
-		}
-		
-		return files;
+	public static function listAllFilesInDirectory(directory:String, checkMods:Bool = true)
+{
+    var folders:Array<String> = [];
+    var files:Array<String> = [];
+    
+    if (FunkinAssets.exists(getCorePath(directory))) folders.push(getCorePath(directory));
+    
+    #if MODS_ALLOWED
+    if (checkMods)
+    {
+        for (mod in Mods.globalMods)
+        {
+            var folder = mods('$mod/$directory');
+            if (sys.FileSystem.exists(folder) && !folders.contains(folder)) folders.push(folder);
+        }
+        
+        var folder = mods(directory);
+        if (sys.FileSystem.exists(folder) && !folders.contains(folder)) folders.push(folder);
+        
+        if (Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
+        {
+            var folder = mods('${Mods.currentModDirectory}/$directory');
+            if (sys.FileSystem.exists(folder) && !folders.contains(folder)) folders.push(folder);
+        }
+    }
+    #end
+    
+    for (folder in folders)
+    {
+
+        for (file in Paths.readDirectory(folder))
+        {
+            var path = haxe.io.Path.join([folder, file]);
+            if (!files.contains(path)) files.push(path);
+        }
+    }
+    
+    return files;
 	}
 	
 	#if MODS_ALLOWED
@@ -479,22 +479,22 @@ class Paths
 	 */
 	public static function modFolders(key:String):String
 	{
-		if (Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
-		{
-			final fileToCheck:String = mods(Mods.currentModDirectory + '/' + key);
-			// trace(fileToCheck);
-			if (FileSystem.exists(fileToCheck))
-			{
-				return fileToCheck;
-			}
-		}
-		
-		for (mod in Mods.globalMods)
-		{
-			final fileToCheck:String = mods(mod + '/' + key);
-			if (FileSystem.exists(fileToCheck)) return fileToCheck;
-		}
-		return mods(key);
+    if (Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
+    {
+        var fileToCheck:String = mods(Mods.currentModDirectory + '/' + key);
+        if (sys.FileSystem.exists(fileToCheck)) return fileToCheck;
+    }
+    
+    for (mod in Mods.globalMods)
+    {
+        var fileToCheck:String = mods(mod + '/' + key);
+        if (sys.FileSystem.exists(fileToCheck)) return fileToCheck;
+    }
+
+    var rootCheck = mods(key);
+    if (sys.FileSystem.exists(rootCheck)) return rootCheck;
+
+    return rootCheck;
 	}
 	#end
 	#if mobile
