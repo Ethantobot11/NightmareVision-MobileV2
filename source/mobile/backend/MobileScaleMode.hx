@@ -8,6 +8,7 @@ import flixel.system.scaleModes.BaseScaleMode;
  */
 class MobileScaleMode extends BaseScaleMode
 {
+	#if mobile
     public static var allowWideScreen(default, set):Bool = true;
     public static var MobileScreenEvent(default, set):Bool = false; // I don't have a Funkin Horror source code right now but I can add a simple support
 
@@ -64,4 +65,5 @@ class MobileScaleMode extends BaseScaleMode
         FlxG.scaleMode = new MobileScaleMode();
         return value;
     }
+	#end
 }
