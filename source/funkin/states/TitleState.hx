@@ -127,45 +127,56 @@ class TitleState extends MusicBeatState
 	}
 	
 	override function update(elapsed:Float)
-	{
-		if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
-		
-		final pressedEnter:Bool = FlxG.gamepads.lastActive?.justPressed.START || FlxG.keys.justPressed.ENTER || controls.ACCEPT;
-		
-		if (!transitioning && skippedIntro)
-		{
-			if (pressedEnter && scriptGroup.call('onEnter', []) != ScriptConstants.STOP_FUNC)
-			{
-				FlxG.camera.flash(ClientPrefs.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
-				transitioning = true;
-				
-				if (titleText != null)
-				{
-					titleText.animation.play('press');
-				}
-				
-				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
-				
-				FlxTimer.wait(1, () -> {
-					FlxG.switchState(MainMenuState.new);
-					closedState = true;
-				});
-			}
-		}
-		
-		if (pressedEnter && !skippedIntro)
-		{
-			skipIntro();
-		}
-		
-		if (swagShader != null)
-		{
-			if (controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
-			if (controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
-		}
-		
-		super.update(elapsed);
-	}
+{
+    if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
+    
+    var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
+    
+    if (!pressedEnter && FlxG.gamepads.lastActive != null) {
+        if (FlxG.gamepads.lastActive.justPressed.START) pressedEnter = true;
+    }
+    #if mobile
+    if (!pressedEnter) {
+        for (touch in FlxG.touches.list) {
+            if (touch.justPressed) {
+                pressedEnter = true;
+            }
+        }
+    }
+    #end
+    if (!transitioning && skippedIntro)
+    {
+        if (pressedEnter && scriptGroup.call('onEnter', []) != ScriptConstants.STOP_FUNC)
+        {
+            FlxG.camera.flash(ClientPrefs.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
+            transitioning = true;
+            
+            if (titleText != null)
+            {
+                titleText.animation.play('press');
+            }
+            
+            FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+            FlxTimer.wait(1, () -> {
+                FlxG.switchState(MainMenuState.new);
+                closedState = true;
+            });
+        }
+    }
+    
+    if (pressedEnter && !skippedIntro)
+    {
+        skipIntro();
+    }
+    
+    if (swagShader != null)
+    {
+        if (controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
+        if (controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
+    }
+    
+    super.update(elapsed);
+    }
 	
 	function createCoolText(textArray:Array<String>, offset:Float = 0)
 	{
