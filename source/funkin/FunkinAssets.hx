@@ -126,14 +126,23 @@ class FunkinAssets
 	 */
 	public static function readDirectory(directory:String):Array<String>
     {
-        if (directory == null || directory == "") return [];
-
-        #if (MODS_ALLOWED || ASSET_REDIRECT)
-        if (sys.FileSystem.exists(directory) && sys.FileSystem.isDirectory(directory)) 
-            return sys.FileSystem.readDirectory(directory);
+        if (directory == null || directory == "" || directory.length == 0) 
+            return [];
+        #if MODS_ALLOWED
+            if (sys.FileSystem.exists(directory) && sys.FileSystem.isDirectory(directory))
+            {
+                return sys.FileSystem.readDirectory(directory);
+            }
         #end
-        var dir = Assets.list().filter(string -> string.contains(directory));
-        return dir.map(string -> string.replace(directory, '').replace('/', ''));
+        try {
+            var assetsList = openfl.utils.Assets.list();
+            var filtered = assetsList.filter(function(s:String) return s.startsWith(directory));
+            return filtered.map(function(s:String) {
+                return s.replace(directory, '').replace('/', '');
+            });
+        } catch(e:Dynamic) {
+            return [];
+        }
     }
 	
 	public static function isDirectory(directory:String):Bool
