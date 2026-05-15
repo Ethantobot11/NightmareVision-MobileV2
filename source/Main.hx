@@ -67,7 +67,7 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		ClientPrefs.tryBindingSave('funkin');
 		
-		addChild(new funkin.backend.FunkinGame(startMeta.width, startMeta.height,!CopyState.checkExistingFiles() ? CopyState : Init, startMeta.fps, startMeta.fps, true,startMeta.startFullScreen));
+		addChild(new funkin.backend.FunkinGame(startMeta.width, startMeta.height,#if mobile !CopyState.checkExistingFiles() ? CopyState : #end Init, startMeta.fps, startMeta.fps, true,startMeta.startFullScreen));
 		
 		// prevent accept button when alt+enter is pressed
 		FlxG.stage.addEventListener(openfl.events.KeyboardEvent.KEY_DOWN, (e) -> {
