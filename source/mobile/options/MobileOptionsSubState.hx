@@ -20,6 +20,7 @@ import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 import mobile.backend.StorageUtil;
+import funkin.Mods;
 
 
 class MobileOptionsSubState extends BaseOptionsMenu
@@ -155,8 +156,8 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		#if android
 		if (ClientPrefs.storageType != lastStorageType) {
 			onStorageChange();
-			ClientPrefs.saveSettings();
-			CoolUtil.showPopUp('Storage Type has been changed and you needed restart the game!!\nPress OK to close the game.', 'Notice!');
+			//ClientPrefs.saveSettings();
+			CoolUtil.doPopUp('Storage Type has been changed and you needed restart the game!!\nPress OK to close the game.', 'Notice!');
 			lime.system.System.exit(0);
 		}
 		#end
