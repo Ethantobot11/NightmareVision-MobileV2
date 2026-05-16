@@ -78,8 +78,6 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 		extendConfig = new Config('saved-extendControls');
 
 		titleText = new Alphabet(75, 60, " Mobile Controls", true);
-		titleText.scaleX = 0.6;
-		titleText.scaleY = 0.6;
 		titleText.alpha = 0.4;
 		titleText.cameras = [ui];
 		add(titleText);
@@ -216,7 +214,7 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 			}
 			titleText.text = 'Controls';
 			inControlsSubstate = true;
-			openSubState(new funkin.states.options.ControlsSubState());
+			openSubState(new funkin.states.options.ControlsSubState(gamepad != null ? Gamepad(gamepad.id) : Keys));
 		});
 		keyboard.color = FlxColor.GRAY;
 		keyboard.setGraphicSize(Std.int(keyboard.width) * 3);
