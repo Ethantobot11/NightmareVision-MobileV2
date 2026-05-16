@@ -214,7 +214,8 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 			}
 			titleText.text = 'Controls';
 			inControlsSubstate = true;
-			openSubState(new funkin.states.options.ControlsSubState());
+			final gamepad = FlxG.gamepads.getFirstActiveGamepad();
+			openSubState(new funkin.states.options.ControlsSubState(gamepad != null ? Gamepad(gamepad.id) : Keys));
 		});
 		keyboard.color = FlxColor.GRAY;
 		keyboard.setGraphicSize(Std.int(keyboard.width) * 3);
