@@ -178,6 +178,8 @@
     
     <!-- Do whatever you want I'm tired uninstall and install everytime -->
 	<certificate path="key.keystore" password="psychengine" alias="psychport" alias-password="psychengine" if="android" unless="debug" />
+	<config:android minimum-sdk-version="26" />
+    <haxedef name="DISABLE_AUDIO_FOCUS" if="android" />
 
     <!-- _________________________________ Custom _______________________________ -->
 
