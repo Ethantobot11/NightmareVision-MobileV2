@@ -40,7 +40,7 @@
     <define name="MODS_ALLOWED" if="cpp" />
     <define name="VIDEOS_ALLOWED" if="cpp" />
     <define name="DISCORD_ALLOWED" if="desktop"/>
-    <define name="TOUCH_CONTROLS" if="mobile"/>
+    <define name="TOUCH_CONTROLS" if="mobile" /> <!---->
 	<define name="LUAMPAD_ALLOWED" if="TOUCH_CONTROLS" />
 
     <!-- _____________________________ Path Settings ____________________________ -->

@@ -12,6 +12,7 @@ import flixel.input.keyboard.FlxKey;
 
 import funkin.backend.DebugDisplay;
 #if mobile
+import mobile.backend.CrashHandler;
 import mobile.states.CopyState;
 #end
 @:nullSafety(Strict)
@@ -95,6 +96,10 @@ class Main extends Sprite
 		
 		#if DISABLE_TRACES
 		haxe.Log.trace = (v:Dynamic, ?infos:haxe.PosInfos) -> {}
+		#end
+
+        #if mobile
+		FlxG.scaleMode = new MobileScaleMode();
 		#end
 	}
 	

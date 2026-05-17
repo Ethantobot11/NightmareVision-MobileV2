@@ -135,14 +135,14 @@ class MobileExtraControl extends MusicBeatSubstate
 					case 4:
 						ClientPrefs.extraKeyReturn4 = returnArray[typeNum][chooseNum];
 				}
-				//ClientPrefs.saveSettings();
+				ClientPrefs.tryBindingSave();
 				updateTitle(titleNum + 1, false, 2, true);
 			}
 		}
 
 		if (back){
 			if (isMain){
-				//ClientPrefs.saveSettings();
+				ClientPrefs.tryBindingSave();
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
 				FlxG.switchState(funkin.states.options.OptionsState.new);

@@ -61,13 +61,13 @@ class ClientPrefs
 	@saveVar public static var autoPause:Bool = true;
 	
 	// graphics ------------------------------------------------------------------------//
-	@saveVar public static var gpuCaching:Bool = true;
+	@saveVar public static var gpuCaching:Bool = #if desktop true #else false #end;
 	
-	@saveVar public static var globalAntialiasing:Bool = true;
+	@saveVar public static var globalAntialiasing:Bool = #if desktop true #else false #end;
 	
-	@saveVar public static var lowQuality:Bool = false;
+	@saveVar public static var lowQuality:Bool = #if desktop false #else true #end;
 	
-	@saveVar public static var shaders:Bool = true;
+	@saveVar public static var shaders:Bool = #if desktop true #else false #end;
 	
 	@saveVar public static var unlockedFramerate:Bool = false;
 	

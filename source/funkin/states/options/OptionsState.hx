@@ -150,7 +150,7 @@ class OptionsState extends MusicBeatState
 		}
         
 		#if TOUCH_CONTROLS
-		if (mobilePad.buttonE.justPressed) {
+		if (mobilePad.buttonE.justPressed || controls.UI_LEFT_P) {
 			removeMobilePad();
 			persistentUpdate = false;
 			openSubState(new MobileExtraControl());

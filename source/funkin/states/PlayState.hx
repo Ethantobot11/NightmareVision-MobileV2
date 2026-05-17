@@ -69,6 +69,8 @@ class PlayState extends MusicBeatState
 	 */
 	public static var instance:Null<PlayState> = null;
 	
+    public static var STRUM_X_MIDDLESCROLL = -278;
+
 	public static var ratingStuff:Array<RatingInfo> = [
 		new RatingInfo('You Suck!', 0.2),
 		new RatingInfo('Shit', 0.4),
@@ -599,6 +601,7 @@ class PlayState extends MusicBeatState
 	    #if TOUCH_CONTROLS
 	    MobileData.init();
 	    #end
+
 		funkin.backend.DebugDisplay.addPlugin(() -> 'curStep: $curStep • curBeat: $curBeat • curSection: $curSection');
 		
 		skipCountdown = false;
@@ -812,6 +815,11 @@ class PlayState extends MusicBeatState
 		
 		if (genNotesBeforeCountdown) generatePlayfields();
 		generateSong(SONG.song);
+
+        #if TOUCH_CONTROLS
+		MusicBeatState.mobilec.visible = true;
+		if (MusicBeatState.checkHitbox != true) MusicBeatState.mobilec.alpha = ClientPrefs.mobilePadAlpha;
+		#end
 		
 		#if FLX_DEBUG
 		FlxG.watch.addFunction('Conductor: ', () -> Conductor.songPosition);
@@ -1747,6 +1755,18 @@ class PlayState extends MusicBeatState
 	
 	override public function update(elapsed:Float):Void
 	{
+    #if TOUCH_CONTROLS
+    if (startedCountdown && !paused && MusicBeatState.mobilec != null) {
+        if (controls.NOTE_LEFT_P) onInputPress(new InputEvent(0));
+        if (controls.NOTE_LEFT_R) onInputRelease(new InputEvent(0));
+        if (controls.NOTE_DOWN_P) onInputPress(new InputEvent(1));
+        if (controls.NOTE_DOWN_R) onInputRelease(new InputEvent(1));
+        if (controls.NOTE_UP_P) onInputPress(new InputEvent(2));
+        if (controls.NOTE_UP_R) onInputRelease(new InputEvent(2));
+        if (controls.NOTE_RIGHT_P) onInputPress(new InputEvent(3));
+        if (controls.NOTE_RIGHT_R) onInputRelease(new InputEvent(3));
+    }
+    #end
 		if (cameraLerping && !inCutscene)
 		{
 			final lerpRate = 0.04 * cameraSpeed * playbackRate;

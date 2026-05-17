@@ -1,7 +1,7 @@
 package mobile.options;
 
 #if desktop
-import Discord.DiscordClient;
+import funkin.api.DiscordClient;
 #end
 import openfl.text.TextField;
 import flixel.addons.display.FlxGridOverlay;
@@ -156,7 +156,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		#if android
 		if (ClientPrefs.storageType != lastStorageType) {
 			onStorageChange();
-			//ClientPrefs.saveSettings();
+			ClientPrefs.tryBindingSave();
 			CoolUtil.doPopUp('Storage Type has been changed and you needed restart the game!!\nPress OK to close the game.', 'Notice!');
 			lime.system.System.exit(0);
 		}
