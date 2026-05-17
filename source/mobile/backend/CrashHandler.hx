@@ -73,7 +73,7 @@ class CrashHandler
 			trace('Couldn\'t save error message. (${e.message})');
 		#end
 
-		CoolUtil.showPopUp('$m\n$stackLabel', "Error!");
+		CoolUtil.doPopUp('$m\n$stackLabel', "Error!");
 
 		#if html5
 		if (flixel.FlxG.sound.music != null)
