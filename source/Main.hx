@@ -1,5 +1,7 @@
 package;
 
+import mobile.backend.CrashHandler;
+
 import funkin.utils.WindowUtil;
 
 import openfl.Lib;
@@ -12,7 +14,6 @@ import flixel.input.keyboard.FlxKey;
 
 import funkin.backend.DebugDisplay;
 #if mobile
-import mobile.backend.CrashHandler;
 import mobile.states.CopyState;
 #end
 @:nullSafety(Strict)
@@ -60,7 +61,7 @@ class Main extends Sprite
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
         #if (CRASH_HANDLER && !debug)
-		funkin.backend.CrashHandler.init();
+		CrashHandler.init();
 		#end
 		
 		initHaxeUI();

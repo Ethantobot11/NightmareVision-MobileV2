@@ -21,6 +21,13 @@ class Splash extends FlxState
 	#if VIDEOS_ALLOWED
 	var video:FunkinVideoSprite;
 	#end
+
+    var mobileTouched:Bool = false;
+    #if mobile
+    for (touch in FlxG.touches.list) {
+        if (touch.justPressed) mobileTouched = true;
+    }
+    #end
 	
 	override function create()
 	{
@@ -52,7 +59,7 @@ class Splash extends FlxState
 			logo.updateHitbox();
 			logo.screenCenter();
 			
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || FlxG.touches.justStarted().length > 0 #end)
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
 			{
 				finish();
 			}
@@ -60,7 +67,7 @@ class Splash extends FlxState
 		#if VIDEOS_ALLOWED
 		if (video != null)
 		{
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || FlxG.touches.justStarted().length > 0 #end)
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
 			{
 				finish();
 			}
