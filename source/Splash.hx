@@ -52,7 +52,7 @@ class Splash extends FlxState
 			logo.updateHitbox();
 			logo.screenCenter();
 			
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile touch.justPressed #end)
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || touch.justPressed #end)
 			{
 				finish();
 			}
@@ -60,7 +60,7 @@ class Splash extends FlxState
 		#if VIDEOS_ALLOWED
 		if (video != null)
 		{
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile touch.justPressed #end)
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || touch.justPressed #end)
 			{
 				finish();
 			}

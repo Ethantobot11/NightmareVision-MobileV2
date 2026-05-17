@@ -1757,14 +1757,74 @@ class PlayState extends MusicBeatState
 	{
     #if TOUCH_CONTROLS
     if (startedCountdown && !paused && MusicBeatState.mobilec != null) {
-        if (controls.NOTE_LEFT_P) onInputPress(new InputEvent(0));
-        if (controls.NOTE_LEFT_R) onInputRelease(new InputEvent(0));
-        if (controls.NOTE_DOWN_P) onInputPress(new InputEvent(1));
-        if (controls.NOTE_DOWN_R) onInputRelease(new InputEvent(1));
-        if (controls.NOTE_UP_P) onInputPress(new InputEvent(2));
-        if (controls.NOTE_UP_R) onInputRelease(new InputEvent(2));
-        if (controls.NOTE_RIGHT_P) onInputPress(new InputEvent(3));
-        if (controls.NOTE_RIGHT_R) onInputRelease(new InputEvent(3));
+        if (controls.NOTE_LEFT_P) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[0] != null) field.members[0].playAnim('pressed');
+            }
+            scripts.call('onKeyPress', [0]);
+            scripts.call('onInputPress', [0]);
+        }
+        if (controls.NOTE_LEFT_R) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[0] != null) {
+                    field.members[0].playAnim('static');
+                    field.members[0].resetAnim = 0;
+                }
+            }
+            scripts.call('onKeyRelease', [0]);
+            scripts.call('onInputRelease', [0]);
+        }
+        if (controls.NOTE_DOWN_P) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[1] != null) field.members[1].playAnim('pressed');
+            }
+            scripts.call('onKeyPress', [1]);
+            scripts.call('onInputPress', [1]);
+        }
+        if (controls.NOTE_DOWN_R) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[1] != null) {
+                    field.members[1].playAnim('static');
+                    field.members[1].resetAnim = 0;
+                }
+            }
+            scripts.call('onKeyRelease', [1]);
+            scripts.call('onInputRelease', [1]);
+        }
+        if (controls.NOTE_UP_P) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[2] != null) field.members[2].playAnim('pressed');
+            }
+            scripts.call('onKeyPress', [2]);
+            scripts.call('onInputPress', [2]);
+        }
+        if (controls.NOTE_UP_R) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[2] != null) {
+                    field.members[2].playAnim('static');
+                    field.members[2].resetAnim = 0;
+                }
+            }
+            scripts.call('onKeyRelease', [2]);
+            scripts.call('onInputRelease', [2]);
+        }
+        if (controls.NOTE_RIGHT_P) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[3] != null) field.members[3].playAnim('pressed');
+            }
+            scripts.call('onKeyPress', [3]);
+            scripts.call('onInputPress', [3]);
+        }
+        if (controls.NOTE_RIGHT_R) {
+            for (field in playFields.members) {
+                if (field.canInput() && field.members[3] != null) {
+                    field.members[3].playAnim('static');
+                    field.members[3].resetAnim = 0;
+                }
+            }
+            scripts.call('onKeyRelease', [3]);
+            scripts.call('onInputRelease', [3]);
+        }
     }
     #end
 		if (cameraLerping && !inCutscene)
