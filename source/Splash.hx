@@ -59,12 +59,6 @@ class Splash extends FlxState
 		#if VIDEOS_ALLOWED
 		if (video != null)
 		{
-			#if mobile
-			for (touch in FlxG.touches.list)
-			{
-				if (touch.justPressed) mobileTouched = true;
-			}
-			#end
 			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER)
 			{
 				finish();
