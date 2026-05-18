@@ -45,8 +45,8 @@
             },
             {
                 "name": "lime",
-                "link": "https://github.com/PsychEngine-report/lime-NVM-V2",
-                "branch": "main"
+                "link": "https://github.com/Ethantobot11/lime",
+                "branch": "master"
             },
             {
                 "name": "openfl",
