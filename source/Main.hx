@@ -60,9 +60,6 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
-        #if (CRASH_HANDLER && !debug)
-		CrashHandler.init();
-		#end
 		
 		initHaxeUI();
 		
