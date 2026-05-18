@@ -81,6 +81,10 @@ class Init extends FlxState
 		funkin.scripting.PluginsManager.populate();
 		
 		FunkinAssets.cache.currentTrackedSounds.addPermanentKey('assets/music/freakyMenu.ogg');
+
+		#if (CRASH_HANDLER && !debug)
+		CrashHandler.init();
+		#end
 		
 		super.create();
 		
