@@ -1,6 +1,6 @@
 package;
 
-import mobile.backend.CrashHandler;
+//import mobile.backend.CrashHandler;
 
 import funkin.utils.WindowUtil;
 
@@ -59,6 +59,9 @@ class Main extends Sprite
 		StorageUtil.copySpesificFileFromAssets('mobile/storageModes.txt', StorageUtil.getCustomStoragePath());
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
+		#if (CRASH_HANDLER && !debug)
+		funkin.backend.CrashHandler.init();
 		#end
 		
 		initHaxeUI();
