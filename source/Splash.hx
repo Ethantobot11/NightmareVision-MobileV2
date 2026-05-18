@@ -22,8 +22,6 @@ class Splash extends FlxState
 	var video:FunkinVideoSprite;
 	#end
 	
-	var mobileTouched:Bool = false;
-	
 	override function create()
 	{
 		_cachedAutoPause = FlxG.autoPause;
@@ -53,13 +51,7 @@ class Splash extends FlxState
 		{
 			logo.updateHitbox();
 			logo.screenCenter();
-			#if mobile
-			for (touch in FlxG.touches.list)
-			{
-				if (touch.justPressed) mobileTouched = true;
-			}
-			#end
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER)
 			{
 				finish();
 			}
@@ -73,7 +65,7 @@ class Splash extends FlxState
 				if (touch.justPressed) mobileTouched = true;
 			}
 			#end
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER)
 			{
 				finish();
 			}
