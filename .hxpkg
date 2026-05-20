@@ -45,8 +45,8 @@
             },
             {
                 "name": "lime",
-                "link": "https://github.com/ShadowEngineTeam/lime",
-                "branch": "4272bbf11217551b928789d2f80f887f54d6f42e"
+                "link": "https://github.com/Ethantobot11/lime",
+                "branch": "master"
             },
             {
                 "name": "openfl",
