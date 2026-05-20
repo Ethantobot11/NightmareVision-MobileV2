@@ -8,6 +8,8 @@ import funkin.states.TitleState;
 import funkin.video.FunkinVideoSprite;
 #end
 
+var mobileTouched:Bool = false;
+
 using StringTools;
 
 @:access(flixel.FlxGame)
