@@ -538,6 +538,17 @@ class PlayState extends MusicBeatState
 	 * Change this to set custom behavior
 	 */
 	public var songEndCallback:Null<Void->Void> = null;
+
+    #if TOUCH_CONTROLS
+    switch(key) {
+        case 0: return controls.NOTE_LEFT;
+        case 1: return controls.NOTE_DOWN;
+        case 2: return controls.NOTE_UP;
+        case 3: return controls.NOTE_RIGHT;
+    }
+    #else
+    if (input != null) return input.inputPressed(key);
+    #end
 	
 	@:noCompletion public function set_cpuControlled(val:Bool):Bool
 	{
@@ -1747,6 +1758,17 @@ class PlayState extends MusicBeatState
 	
 	override public function update(elapsed:Float):Void
 	{
+        #if TOUCH_CONTROLS
+        if (controls.NOTE_LEFT_P)  triggerMobileInput(0);
+        if (controls.NOTE_DOWN_P)  triggerMobileInput(1);
+        if (controls.NOTE_UP_P)    triggerMobileInput(2);
+        if (controls.NOTE_RIGHT_P) triggerMobileInput(3);
+        
+        if (controls.NOTE_LEFT_R)  triggerMobileRelease(0);
+        if (controls.NOTE_DOWN_R)  triggerMobileRelease(1);
+        if (controls.NOTE_UP_R)    triggerMobileRelease(2);
+        if (controls.NOTE_RIGHT_R) triggerMobileRelease(3);
+        #end
 		if (cameraLerping && !inCutscene)
 		{
 			final lerpRate = 0.04 * cameraSpeed * playbackRate;
@@ -2839,7 +2861,7 @@ class PlayState extends MusicBeatState
 				{
 					if (daNote.isSustainNote
 						&& !daNote.blockHit
-						&& (input.inputPressed(daNote.noteData) || (daNote.wasGoodHit && daNote.parent.coyoteProgress < 1))
+						&& (checkNoteHeld(daNote.noteData) || (daNote.wasGoodHit && daNote.parent.coyoteProgress < 1))
 						&& Conductor.songPosition >= daNote.strumTime
 						&& !daNote.tooLate
 						&& !daNote.wasGoodHit)
@@ -2855,7 +2877,7 @@ class PlayState extends MusicBeatState
 					if (daNote.isSustainNote
 						&& !daNote.blockHit
 						&& !daNote.ignoreNote
-						&& !input.inputPressed(daNote.noteData)
+						&& !checkNoteHeld(daNote.noteData)
 						&& !endingSong
 						&& !daNote.wasGoodHit)
 					{
@@ -3154,4 +3176,87 @@ class PlayState extends MusicBeatState
 	public function removeControls()
 		removeMobileControls();
 	#end
+
+    #if TOUCH_CONTROLS
+    function triggerMobileInput(noteData:Int)
+    {
+        if (cpuControlled || paused || !startedCountdown) return;
+
+        var prevTime:Float = Conductor.songPosition;
+        if (audio.inst?.playing) Conductor.songPosition = @:privateAccess audio.inst._channel.position;
+        
+        Conductor.songPosition -= lime.system.System.getTimer() - lime.system.System.getTimer(); 
+
+        if (generatedMusic && !endingSong)
+        {
+            var anyInput:Bool = false;
+            var ghostTapped:Bool = true;
+            
+            for (field in playFields.members)
+            {
+                if (!field.canInput()) continue;
+                anyInput = true;
+                
+                var topNote:Note = null;
+                for (note in field.getTapNotes(noteData)) 
+                {
+                    final higherPriority:Bool = (topNote == null || note.hitPriority > topNote.hitPriority);
+                    if (higherPriority || (!higherPriority && note.strumTime < topNote.strumTime)) topNote = note;
+                }
+                
+                if (topNote != null)
+                {
+                    field.onNoteHit.dispatch(topNote, field);
+                    ghostTapped = false;
+                }
+                else if (field.playAnims)
+                {
+                    var strum = field.members[noteData];
+                    if (strum != null)
+                    {
+                        strum.playAnim('pressed');
+                        strum.resetAnim = 0;
+                    }
+                }
+            }
+            
+            if (ghostTapped && anyInput)
+            {
+                scripts.call('onGhostTap', [noteData]);
+                if (!ClientPrefs.ghostTapping)
+                {
+                    for (field in playFields.members)
+                    {
+                        if (field.canInput()) field.onMissPress.dispatch(noteData);
+                    }
+                    scripts.call('noteMissPress', [noteData]);
+                }
+            }
+        }
+        
+        Conductor.songPosition = prevTime;
+        scripts.call('onKeyPress', [noteData]);
+        scripts.call('onInputPress', [noteData]);
+    }
+
+    function triggerMobileRelease(noteData:Int)
+    {
+        if (startedCountdown && !paused)
+        {
+            for (field in playFields.members)
+            {
+                if (!field.canInput()) continue;
+                
+                var spr:StrumNote = field.members[noteData];
+                if (spr != null)
+                {
+                    spr.playAnim('static');
+                    spr.resetAnim = 0;
+                }
+            }
+            scripts.call('onKeyRelease', [noteData]);
+            scripts.call('onInputRelease', [noteData]);
+        }
+    }
+    #end
 }
