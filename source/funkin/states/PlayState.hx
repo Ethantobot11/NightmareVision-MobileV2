@@ -541,6 +541,8 @@ class PlayState extends MusicBeatState
 	 */
 	public var songEndCallback:Null<Void->Void> = null;
 
+    function checkNoteHeld(key:Int):Bool
+	{
     #if TOUCH_CONTROLS
     switch(key) {
         case 0: return controls.NOTE_LEFT;
@@ -551,6 +553,9 @@ class PlayState extends MusicBeatState
     #else
     if (input != null) return input.inputPressed(key);
     #end
+
+    return false;
+	}
 	
 	@:noCompletion public function set_cpuControlled(val:Bool):Bool
 	{
