@@ -1,0 +1,3 @@
+Name: EXTERNAL_PE Folder: /storage/emulated/0/.PsychEngine
+Name: EXTERNAL_PEO Folder: /storage/emulated/0/.PsychOnline
+Name: EXTERNAL_PEX Folder: /storage/emulated/0/.Psych Extended

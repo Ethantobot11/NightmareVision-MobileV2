@@ -1,5 +1,7 @@
 package;
 
+//import mobile.backend.CrashHandler;
+
 import funkin.utils.WindowUtil;
 
 import openfl.Lib;
@@ -58,7 +60,7 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
-        #if (CRASH_HANDLER && !debug)
+		#if (CRASH_HANDLER && !debug)
 		funkin.backend.CrashHandler.init();
 		#end
 		
@@ -95,6 +97,10 @@ class Main extends Sprite
 		
 		#if DISABLE_TRACES
 		haxe.Log.trace = (v:Dynamic, ?infos:haxe.PosInfos) -> {}
+		#end
+
+        #if mobile
+		FlxG.scaleMode = new MobileScaleMode();
 		#end
 	}
 	

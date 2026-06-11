@@ -73,7 +73,7 @@ class CrashHandler
 			trace('Couldn\'t save error message. (${e.message})');
 		#end
 
-		CoolUtil.showPopUp('$m\n$stackLabel', "Error!");
+		CoolUtil.doPopUp('$m\n$stackLabel', "Error!");
 
 		#if html5
 		if (flixel.FlxG.sound.music != null)
@@ -81,7 +81,7 @@ class CrashHandler
 
 		js.Browser.window.location.reload(true);
 		#else
-		#if DISCORD_ALLOWED DiscordClient.shutdown(); #end
+		#if DISCORD_ALLOWED DiscordClient.close(); #end
 		lime.system.System.exit(1);
 		#end
 	}

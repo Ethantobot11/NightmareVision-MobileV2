@@ -69,6 +69,8 @@ class PlayState extends MusicBeatState
 	 */
 	public static var instance:Null<PlayState> = null;
 	
+    public static var STRUM_X_MIDDLESCROLL = -278;
+
 	public static var ratingStuff:Array<RatingInfo> = [
 		new RatingInfo('You Suck!', 0.2),
 		new RatingInfo('Shit', 0.4),
@@ -610,6 +612,7 @@ class PlayState extends MusicBeatState
 	    #if TOUCH_CONTROLS
 	    MobileData.init();
 	    #end
+
 		funkin.backend.DebugDisplay.addPlugin(() -> 'curStep: $curStep • curBeat: $curBeat • curSection: $curSection');
 		
 		skipCountdown = false;
@@ -823,6 +826,11 @@ class PlayState extends MusicBeatState
 		
 		if (genNotesBeforeCountdown) generatePlayfields();
 		generateSong(SONG.song);
+
+        #if TOUCH_CONTROLS
+		MusicBeatState.mobilec.visible = true;
+		if (MusicBeatState.checkHitbox != true) MusicBeatState.mobilec.alpha = ClientPrefs.mobilePadAlpha;
+		#end
 		
 		#if FLX_DEBUG
 		FlxG.watch.addFunction('Conductor: ', () -> Conductor.songPosition);
