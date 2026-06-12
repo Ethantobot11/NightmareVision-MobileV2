@@ -10,8 +10,6 @@ import funkin.video.FunkinVideoSprite;
 
 var mobileTouched:Bool = false;
 
-using StringTools;
-
 @:access(flixel.FlxGame)
 class Splash extends FlxState
 {
