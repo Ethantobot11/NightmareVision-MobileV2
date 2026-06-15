@@ -207,4 +207,38 @@ class StorageUtil
 				trace('$fileName couldn\'t be saved. (${e.message})');
 	}
 	#end
+
+	public static function copySpesificFileFromAssets(filePathInAssets:String, copyTo:String, ?changeable:Bool)
+	{
+		try {
+			if (Assets.exists(filePathInAssets)) {
+				var fileData:Bytes = Assets.getBytes(filePathInAssets);
+				if (fileData != null) {
+					if (FileSystem.exists(copyTo) && changeable) {
+						var existingFileData:Bytes = File.getBytes(filePathInAssets);
+						if (existingFileData != fileData && existingFileData != null)
+							File.saveBytes(copyTo, fileData);
+					}
+					else if (!FileSystem.exists(copyTo))
+						File.saveBytes(copyTo, fileData);
+
+					trace('Copied: $filePathInAssets -> $copyTo');
+				} else {
+					var textData = Assets.getText(filePathInAssets);
+					if (textData != null) {
+						if (FileSystem.exists(copyTo) && changeable) {
+							var existingTxtData = File.getContent(filePathInAssets);
+							if (existingTxtData != textData && existingTxtData != null)
+								File.saveContent(copyTo, textData);
+						}
+						else if (!FileSystem.exists(copyTo))
+							File.saveContent(copyTo, textData);
+						trace('Copied (text): $filePathInAssets -> $copyTo');
+					}
+				}
+			}
+		} catch (e:Dynamic) {
+			trace('Error copying file $filePathInAssets: $e');
+		}
+	}
 }
