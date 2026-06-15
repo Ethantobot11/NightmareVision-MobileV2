@@ -61,7 +61,7 @@ class Main extends Sprite
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
 		#if (CRASH_HANDLER && !debug)
-		funkin.backend.CrashHandler.init();
+		mobile.backend.CrashHandler.init();
 		#end
 		
 		initHaxeUI();

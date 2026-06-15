@@ -3,6 +3,7 @@ package mobile.backend;
 import openfl.events.UncaughtErrorEvent;
 import openfl.events.ErrorEvent;
 import openfl.errors.Error;
+import funkin.backend.FallbackState;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -90,6 +91,7 @@ class CrashHandler
 	private static function onError(message:Dynamic):Void
 	{
 		throw Std.string(message);
+        FlxG.switchState(() -> new FallbackState(message, () -> FlxG.switchState(() -> new MainMenuState())));
 	}
 	#end
 }

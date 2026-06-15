@@ -46,6 +46,7 @@
     <!-- _____________________________ Path Settings ____________________________ -->
 
     <classpath name="source" />
+    <assets path="mobile"/>
 
     <!--Fixes hxvlc using global rather than local. you will need to use hmm/hxpkg to compile this project though-->
     <setenv name="HAXEPATH" value="./"/>

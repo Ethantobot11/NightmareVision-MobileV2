@@ -212,10 +212,13 @@ class CopyState extends MusicBeatState
 		locatedFiles = assets.concat(mods);
 		locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(file));
 		#if android
-		for (file in locatedFiles)
-			if (file.startsWith('content/'))
-    				locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(haxe.io.Path.join([StorageUtil.getStorageDirectory(), file])));
-		#end
+        locatedFiles = locatedFiles.filter(function(file) {
+            if (file.startsWith('content/')) {
+                return !FileSystem.exists(haxe.io.Path.join([StorageUtil.getStorageDirectory(), file]));
+            }
+            return true;
+        });
+        #end
 
 		var filesToRemove:Array<String> = [];
 
