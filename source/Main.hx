@@ -47,9 +47,7 @@ class Main extends Sprite
 	
 	public function new()
 	{
-		super();
-		mobile.backend.CrashHandler.init();
-		
+		super();		
 		#if mobile
 		#if android
 		StorageUtil.initExternalStorageDirectory(); //do not make this jobs everytime
@@ -62,6 +60,7 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
+		mobile.backend.CrashHandler.init();
 		
 		initHaxeUI();
 		
