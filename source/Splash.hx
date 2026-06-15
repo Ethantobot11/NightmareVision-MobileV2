@@ -8,7 +8,7 @@ import funkin.states.TitleState;
 import funkin.video.FunkinVideoSprite;
 #end
 
-var mobileTouched:Bool = false;
+//var mobileTouched:Bool = false;
 
 @:access(flixel.FlxGame)
 class Splash extends FlxState
@@ -49,13 +49,13 @@ class Splash extends FlxState
 	{
 		if (logo != null)
 		{
-			#if mobile
+			/*#if mobile
 			for (touch in FlxG.touches.list)
 			{
 				if (touch.justPressed) mobileTouched = true;
 			}
-			#end
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
+			#end*/
+			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) //#if mobile || mobileTouched #end)
 			logo.updateHitbox();
 			logo.screenCenter();
 			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER)
@@ -72,7 +72,7 @@ class Splash extends FlxState
 				if (touch.justPressed) mobileTouched = true;
 			}
 			#end
-			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
+			//if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER #if mobile || mobileTouched #end)
 			if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER)
 			{
 				finish();
