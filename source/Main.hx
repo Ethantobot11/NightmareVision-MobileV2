@@ -48,6 +48,8 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		mobile.backend.CrashHandler.init();
+		
 		#if mobile
 		#if android
 		StorageUtil.initExternalStorageDirectory(); //do not make this jobs everytime
@@ -59,9 +61,6 @@ class Main extends Sprite
 		StorageUtil.copySpesificFileFromAssets('mobile/storageModes.txt', StorageUtil.getCustomStoragePath());
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
-		#end
-		#if (CRASH_HANDLER && !debug)
-		mobile.backend.CrashHandler.init();
 		#end
 		
 		initHaxeUI();
